@@ -4,7 +4,12 @@ services:
   dss_tp_final:
     build: ./build
     container_name: dss_tp_final
+    environment:
+      - DISPLAY:unix$DISPLAY
     ports:
       - "5000:5000"
     volumes:
       - ./app:/app
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+    devices:
+      - /dev/video0:/dev/video0

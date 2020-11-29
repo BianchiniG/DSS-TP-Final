@@ -43,11 +43,11 @@ def preprocesar(data_folder, db_file):
         face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
         faces_detected = face_cascade.detectMultiScale(img, scaleFactor=1.5, minNeighbors=5)
         (x, y, w, h) = faces_detected[0] 
-        cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 1); 
+        cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 1)
         img = cv2.normalize(img, None, 0, 255, cv2.NORM_MINMAX)
         imgr = img[y:y+h, x:x+w]
-        nuevo=cv2.resize(imgr,(480,640))#(I1.shape[1],I1.shape[0]))
-        r=cv2.imwrite(os.path.join(data_folder,str(row.imagen)), nuevo)
+        nuevo = cv2.resize(imgr, (480, 640))#(I1.shape[1],I1.shape[0]))
+        r = cv2.imwrite(os.path.join(data_folder, str(row.imagen)), nuevo)
 
 def create_dbs():
     dataframe = pd.DataFrame(data=[], columns=['index', 'imagen', 'clase'])

@@ -1,9 +1,17 @@
 {% extends 'base.html' %}
 
 {% block header %}
-  <h1>{% block title %}Index{% endblock %}</h1>
+<div class="row header">
+  <div class="col-md-12">
+    <h1>{% block title %}Index{% endblock %}</h1>
+  </div>
+</div>
 {% endblock %}
 
 {% block content %}
-    <p>En el index</p>
+<div class="row content">
+  <div class="col-md-12">
+    <img class="video" src="{{ url_for('video_feed') }}">
+  </div>
+</div>
 {% endblock %}
