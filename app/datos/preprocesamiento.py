@@ -32,9 +32,10 @@ def generate_db(folder, dataframe):
             datos = {'index': index, 'imagen': file.path, 'clase': emocion}
             dataframe.loc[index] = datos
 
+
 def preprocesar(data_folder, db_file):
     data_folder = Path(data_folder)
-    df=pd.read_csv(db_file)
+    df = pd.read_csv(db_file)
 
     for index, row in df.iterrows():
         file_to_open = data_folder / row.imagen
@@ -49,15 +50,16 @@ def preprocesar(data_folder, db_file):
         nuevo = cv2.resize(imgr, (480, 640))#(I1.shape[1],I1.shape[0]))
         r = cv2.imwrite(os.path.join(data_folder, str(row.imagen)), nuevo)
 
+
 def create_dbs():
     dataframe = pd.DataFrame(data=[], columns=['index', 'imagen', 'clase'])
-    db = generate_db(facesdb_folder, dataframe)
+    generate_db(facesdb_folder, dataframe)
     dataframe.to_csv(FACESDB_FOLDER+'/'+FACESDB_OUT_FILENAME)
     dataframe = pd.DataFrame(data=[], columns=['index', 'imagen', 'clase'])
-    db = generate_db(facesgoogleset_folder, dataframe)
+    generate_db(facesgoogleset_folder, dataframe)
     dataframe.to_csv(FACESGOOGLESET_FOLDER+'/'+FACESGOOGLESET_OUT_FILENAME)
 
-# create_dbs()
 
+# create_dbs()
 preprocesar(FACESDB_FOLDER, FACESDB_FOLDER+'/'+FACESDB_OUT_FILENAME)
 # preprocesar(FACESGOOGLESET_FOLDER, FACESGOOGLESET_OUT_FILENAME)
