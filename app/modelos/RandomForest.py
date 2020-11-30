@@ -11,5 +11,5 @@ class RandomForest(Model):
     def fit(self):
         pass
 
-    def predict(self):
+    def predict(self, image):
         pass
