@@ -32,5 +32,17 @@ def video_feed():
     return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
+@app.route('/result/:model')
+def view_result(model):
+    if model == 'cnn':
+        return render_template('cnn_train_results.html')
+    elif model == 'rf':
+        return render_template('rf_train_results.html')
+    elif model == 'svm':
+        return render_template('svm_train_results.html')
+    else:
+        return render_template('not_found.html')
+
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', threaded=True)
