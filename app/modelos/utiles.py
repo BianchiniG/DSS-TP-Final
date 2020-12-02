@@ -1,6 +1,7 @@
 DB_BASEPATH = '/app/datos/'
 FACESDB_ROUTE = '/app/datos/datasets/faces-db/faces-db.csv'
 FACESGOOGLESET_ROUTE = '/app/datos/datasets/faces-googleset/faces-googleset-db.csv'
+LANDMARKS_SHAPE_PREDICTOR_FILE = '/app/datos/shape_predictor_68_face_landmarks.dat'
 
 RF_TRAINED_MODEL_FILE = '/app/datos/trained/rf_trained_model.pkl'
 CNN_TRAINED_MODEL_FILE = '/app/datos/trained/cnn_trained_model.loquesea'

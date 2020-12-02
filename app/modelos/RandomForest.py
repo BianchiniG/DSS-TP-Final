@@ -8,7 +8,7 @@ from sklearn.metrics import confusion_matrix
 from sklearn.ensemble import RandomForestClassifier, BaggingClassifier
 
 from Model import Model
-from utiles import EMOCIONES, RF_TRAINED_MODEL_FILE
+from utiles import EMOCIONES, RF_TRAINED_MODEL_FILE, LANDMARKS_SHAPE_PREDICTOR_FILE
 
 N_ESTIMATORS = 100
 BETWEEN_EYES_LANDMARK = 26
@@ -62,11 +62,7 @@ class RandomForest(Model):
 
     def __get_labeled_images(self, images, labels):
         image_labels = list(zip(images, labels))
-        print("antes")
-        print(image_labels)
         random.shuffle(image_labels)  # TODO: Ver porque este shuffle se porta mal.
-        print("despues")
-        print(image_labels)
         return image_labels
 
     def __get_data_sets(self, image_labels):
@@ -102,7 +98,7 @@ class RandomForest(Model):
 
     def __get_landmarks(self, image):
         detector = dlib.get_frontal_face_detector()
-        predictor = dlib.shape_predictor('shape_predictor_68_face_landmarks.dat')
+        predictor = dlib.shape_predictor(LANDMARKS_SHAPE_PREDICTOR_FILE)
         image = image.copy()
         detections = detector(image, 1)
 
