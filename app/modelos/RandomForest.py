@@ -45,12 +45,11 @@ class RandomForest(Model):
         test_data = np.asarray(test_data)
         test_label = np.asarray(test_label)
         model.fit(train_data, train_label)
-        print("Obtenemos el puntaje de ajuste del modelo...")
-        print("- Para los datos de entrenamiento:", model.score(train_data, train_label))
-        print("- Para los datos de prueba:", model.score(test_data, test_label))
+        # print("Obtenemos el puntaje de ajuste del modelo...")
+        # print("- Para los datos de entrenamiento:", model.score(train_data, train_label))
+        # print("- Para los datos de prueba:", model.score(test_data, test_label))
         print('El entrenamiento finalizó en %f segundos' % (time() - start_time))
-        self.plot_classification_report()
-
+        # self.plot_classification_report()
         return model, test_data, test_label
 
     def __test_model(self, rf_clf, test_data, test_label):
@@ -62,7 +61,8 @@ class RandomForest(Model):
 
     def __get_labeled_images(self, images, labels):
         image_labels = list(zip(images, labels))
-        random.shuffle(image_labels)  # TODO: Ver porque este shuffle se porta mal.
+        random.seed(time())
+        random.shuffle(image_labels)
         return image_labels
 
     def __get_data_sets(self, image_labels):
