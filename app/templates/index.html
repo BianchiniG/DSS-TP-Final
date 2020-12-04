@@ -3,7 +3,7 @@
 {% block header %}
 <div class="row header">
   <div class="col-md-12">
-    <h1>{% block title %}Index{% endblock %}</h1>
+    <h1>{% block title %}Reconocimiento de Emociones{% endblock %}</h1>
   </div>
 </div>
 {% endblock %}
@@ -13,5 +13,29 @@
   <div class="col-md-12">
     <img class="video" src="{{ url_for('video_feed') }}">
   </div>
+  <div class="col-md-12">
+    <div class="content">
+      <h3>Resultados</h3>
+      <div class="row">
+        <table class="tabla-resultados">
+          <thead>
+            <th>Random Forest + BAGGing</th>
+            <th>SMV</th>
+            <th>Neural Network</th>
+          </thead>
+          <tbody>
+            <td class="rf"></td>
+            <td class="svm"></td>
+            <td class="cnn"></td>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+  <script src="{{url_for('static', filename='js/recon_results.js')}}"></script>
 {% endblock %}

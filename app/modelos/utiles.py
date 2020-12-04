@@ -5,7 +5,7 @@ LANDMARKS_SHAPE_PREDICTOR_FILE = '/app/datos/shape_predictor_68_face_landmarks.d
 
 RF_TRAINED_MODEL_FILE = '/app/datos/trained/rf_trained_model.pkl'
 CNN_TRAINED_MODEL_FILE = '/app/datos/trained/cnn_trained_model.h5'
-SVM_TRAINED_MODEL_FILE = '/app/datos/trained/svm_trained_model.loquesea'
+SVM_TRAINED_MODEL_FILE = '/app/datos/trained/svm_trained_model.pkl'
 
 EMOCIONES = {
     0: 'anger',
@@ -17,6 +17,9 @@ EMOCIONES = {
     6: 'disgust',
     7: 'surprise'
 }
+
+IMG_ROWS = 48
+IMG_COLS = 48
 
 
 def get_label_by_emotion(e):

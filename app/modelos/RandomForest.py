@@ -1,3 +1,5 @@
+import sys
+sys.path.append("..")
 import cv2
 import dlib
 import joblib
@@ -5,15 +7,16 @@ import random
 import numpy as np
 from time import time
 from sklearn.metrics import confusion_matrix
-from sklearn.ensemble import RandomForestClassifier, BaggingClassifier
-
-from Model import Model
-from utiles import EMOCIONES, RF_TRAINED_MODEL_FILE, LANDMARKS_SHAPE_PREDICTOR_FILE
+from sklearn.ensemble import RandomForestClassifier, BaggingClassifier, RandomForestRegressor
+from Preprocesamiento import Preprocesamiento
+from .Model import Model
+from .utiles import EMOCIONES, RF_TRAINED_MODEL_FILE, LANDMARKS_SHAPE_PREDICTOR_FILE
 
 N_ESTIMATORS = 100
 BETWEEN_EYES_LANDMARK = 26
 NOSE_TIP_LANDMARK = 29
 TRAINED_CONFUSION_MATRIX_PLOT = '/app/static/img/random_forest_fit_confusion_matrix.png'
+TRAINED_LEARNING_CURVE_PLOT = '/app/static/img/random_forest_fit_learning_curve.png'
 
 
 class RandomForest(Model):
@@ -30,13 +33,15 @@ class RandomForest(Model):
         self.plot_confusion_matrix(cm=confusion_matrix, archivo=TRAINED_CONFUSION_MATRIX_PLOT)
 
     def predict(self, image):
+        preprocesador = Preprocesamiento()
         model = joblib.load(RF_TRAINED_MODEL_FILE)
-        prediction = model.predict(np.array(self.__get_face_landmarks(image)).reshape(1, -1))
+        prediction = model.predict(np.array(self.__get_landmarks(preprocesador.preprocess_image(image))).reshape(1, -1))
         return EMOCIONES[prediction[0]]
 
     def __train_model(self, test_data, test_label, train_data, train_label):
         start_time = time()
         rf_model = RandomForestClassifier(n_estimators=N_ESTIMATORS, max_features=6)
+
         model = BaggingClassifier(base_estimator=rf_model, n_estimators=N_ESTIMATORS,
                                   bootstrap=True, n_jobs=-1,
                                   random_state=42)
@@ -50,6 +55,9 @@ class RandomForest(Model):
         # print("- Para los datos de prueba:", model.score(test_data, test_label))
         print('El entrenamiento finalizó en %f segundos' % (time() - start_time))
         # self.plot_classification_report()
+        self.plot_learning_curve(RandomForestRegressor(), 'Curva de Aprendizaje usando regresor Random Forest',
+                                 'Tamaño del set de pruebas', 'Errores', test_data, test_label,
+                                 archivo=TRAINED_LEARNING_CURVE_PLOT)
         return model, test_data, test_label
 
     def __test_model(self, rf_clf, test_data, test_label):
@@ -77,7 +85,7 @@ class RandomForest(Model):
 
         for item in train_image_labels:
             try:
-                train_data.append(self.__get_face_landmarks(item[0]))
+                train_data.append(self.__get_landmarks(cv2.imread(item[0])))
                 train_label.append(item[1])
             except Exception:
                 print("No se detecto una cara en la imagen: "+item[0])
@@ -87,7 +95,7 @@ class RandomForest(Model):
 
         for item in test_image_labels:
             try:
-                test_data.append(self.__get_face_landmarks(item[0]))
+                test_data.append(self.__get_landmarks(cv2.imread(item[0])))
                 test_label.append(item[1])
             except Exception:
                 print("No se detecto una cara en la imagen: "+item[0])
@@ -140,16 +148,3 @@ class RandomForest(Model):
             raise Exception("No se detecto una cara en la imagen")
 
         return landmarks_vectorised
-
-    def __get_face_landmarks(self, image):
-        if isinstance(image, str):
-            image = self.__convert_image(image)
-        return self.__get_landmarks(image)
-
-    def __convert_image(self, _image):
-        image = cv2.imread(_image)
-        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
-        clahe_image = clahe.apply(gray)
-        return clahe_image
-
