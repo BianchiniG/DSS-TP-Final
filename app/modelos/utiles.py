@@ -18,6 +18,9 @@ EMOCIONES = {
     7: 'surprise'
 }
 
+IMG_ROWS = 48
+IMG_COLS = 48
+
 
 def get_label_by_emotion(e):
     for label, emotion in EMOCIONES.items():

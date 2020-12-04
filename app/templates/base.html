@@ -12,7 +12,14 @@
 
 <body>
   <div class="container">
-    {% block header %}{% endblock %}
+    {% block header %}
+    <nav>
+      <ul>
+        <li>Predictor</li>
+        <li>Resultados Entrenamiento</li>
+      </ul>
+    </nav>
+    {% endblock %}
 
     {% for message in get_flashed_messages() %}
     <div class="flash">{{ message }}</div>

@@ -1,11 +1,12 @@
-from flask import Flask, render_template, Response
 import cv2
+from flask import Flask, render_template, Response, jsonify
+from Reconocimiento import Reconocimiento
 
 app = Flask(__name__)
 
-camera = cv2.VideoCapture('/dev/video0')
-if not camera.isOpened():
-    camera.open(0)
+cv2.ocl.setUseOpenCL(False)
+camera = cv2.VideoCapture(-1)
+reconocimiento = Reconocimiento()
 
 
 def gen_frames():
@@ -16,7 +17,7 @@ def gen_frames():
             break
         else:
             ret, buffer = cv2.imencode('.jpg', frame)
-            # Llamada a las predicciones
+            # reconocimiento.ejecutar(buffer)
             frame = buffer.tobytes()
             yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
@@ -32,6 +33,11 @@ def video_feed():
     return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
+@app.route('/recon_results')
+def get_recon_results():
+    return jsonify(reconocimiento.get_data())
+
+
 @app.route('/result/:model')
 def view_result(model):
     if model == 'cnn':
@@ -45,4 +51,4 @@ def view_result(model):
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', threaded=True)
+    app.run(debug=False, host='0.0.0.0', threaded=True)

@@ -3,11 +3,9 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from cv2 import imread, cvtColor, COLOR_RGB2GRAY, resize
-from utiles import get_label_by_emotion, DB_BASEPATH, FACESDB_ROUTE, FACESGOOGLESET_ROUTE, EMOCIONES
 from sklearn.metrics import classification_report
-
-IMG_ROWS = 48
-IMG_COLS = 48
+from sklearn.model_selection import learning_curve
+from .utiles import get_label_by_emotion, DB_BASEPATH, FACESDB_ROUTE, FACESGOOGLESET_ROUTE, EMOCIONES, IMG_ROWS, IMG_COLS
 
 
 class Model(abc.ABC):
@@ -45,7 +43,8 @@ class Model(abc.ABC):
         return images, labels
 
     @staticmethod
-    def plot_confusion_matrix(cm, classes=EMOCIONES.values(), normalize=True, title='Confusion matrix', cmap=plt.cm.Greens, archivo='plt.png'):
+    def plot_confusion_matrix(cm, classes=EMOCIONES.values(), normalize=True, title='Confusion matrix',
+                              cmap=plt.cm.Greens, archivo='plt_confusion_matrix.png'):
         if normalize:
             cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
             title = 'Normalized ' + title
@@ -61,6 +60,32 @@ class Model(abc.ABC):
         plt.ylabel('True label')
         plt.xlabel('Predicted label')
         plt.savefig(archivo)
+        plt.close()
+
+    @staticmethod
+    def plot_learning_curve(estimator, title, ylabel, xlabel, X, y, axes=None, ylim=None, cv=None, n_jobs=None,
+                            train_sizes=np.linspace(.1, 1.0, 5), archivo='plt_learning_curve.png'):
+
+        train_sizes, train_scores, test_scores, fit_times, _ = \
+            learning_curve(estimator, X, y, cv=cv, n_jobs=n_jobs,
+                           train_sizes=train_sizes,
+                           return_times=True)
+        train_scores_mean = np.mean(train_scores, axis=1)
+        train_scores_std = np.std(train_scores, axis=1)
+        test_scores_mean = np.mean(test_scores, axis=1)
+        test_scores_std = np.std(test_scores, axis=1)
+        fit_times_mean = np.mean(fit_times, axis=1)
+        fit_times_std = np.std(fit_times, axis=1)
+
+        plt.style.use('seaborn')
+        plt.plot(train_sizes, train_scores_mean, label='Training error')
+        plt.plot(train_sizes, test_scores_mean, label='Validation error')
+        plt.ylabel(ylabel, fontsize=14)
+        plt.xlabel(xlabel, fontsize=14)
+        plt.title(title, fontsize=18, y=1.03)
+        plt.legend()
+        plt.savefig(archivo)
+        plt.close()
 
     def plot_classification_report(self, test_labels, predicted_labels):
         report_dict = classification_report(test_labels, predicted_labels)

@@ -7,4 +7,6 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 
+RUN usermod -aG video root
+
 CMD python app.py
