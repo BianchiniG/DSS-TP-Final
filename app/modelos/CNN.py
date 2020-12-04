@@ -27,7 +27,7 @@ class CNN(Model):
         
         model, test_data, test_label = self.__train_model(test_data, test_label, train_data, train_label)
         
-        joblib.dump(model, CNN_TRAINED_MODEL_FILE, compress=9)
+        model.save(CNN_TRAINED_MODEL_FILE)
         
         print('Prediciendo CNN utilizando el set de prueba')
         confusion_matrix = self.__test_model(model, test_data, test_label)
@@ -35,10 +35,17 @@ class CNN(Model):
 
     def __test_model(self, cnn_clf, test_data, test_label):
         start_time = time()
-        rf_predicted_labels = cnn_clf.predict(test_data)
+        cnn_predicted_labels = cnn_clf.predict(test_data)
         print('La predicción finalizó en %f segundos' % (time() - start_time))
-        print('Precisión del entrenamiento: %f' % (np.mean(rf_predicted_labels == test_label) * 100))
-        return confusion_matrix(test_label, rf_predicted_labels)
+
+        predicted_labels=[]
+        for p in cnn_predicted_labels:
+            predicted_labels.append(np.argmax(p))
+        t_labels=[]
+        for tl in test_label:
+            t_labels.append(np.argmax(tl))
+
+        return confusion_matrix(t_labels, predicted_labels)
 
     def __get_labeled_images(self, images, labels):
         image_labels = list(zip(images, labels))
