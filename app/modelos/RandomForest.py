@@ -7,8 +7,8 @@ from time import time
 from sklearn.metrics import confusion_matrix
 from sklearn.ensemble import RandomForestClassifier, BaggingClassifier
 
-from Model import Model
-from utiles import EMOCIONES, RF_TRAINED_MODEL_FILE, LANDMARKS_SHAPE_PREDICTOR_FILE
+from modelos.Model import Model
+from modelos.utiles import EMOCIONES, RF_TRAINED_MODEL_FILE, LANDMARKS_SHAPE_PREDICTOR_FILE
 
 N_ESTIMATORS = 100
 BETWEEN_EYES_LANDMARK = 26

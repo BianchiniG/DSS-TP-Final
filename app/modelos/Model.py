@@ -3,8 +3,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from cv2 import imread, cvtColor, COLOR_RGB2GRAY, resize
-from utiles import get_label_by_emotion, DB_BASEPATH, FACESDB_ROUTE, FACESGOOGLESET_ROUTE, EMOCIONES
-from sklearn.metrics import classification_report
+from modelos.utiles import get_label_by_emotion, DB_BASEPATH, FACESDB_ROUTE, FACESGOOGLESET_ROUTE, EMOCIONES
 
 IMG_ROWS = 48
 IMG_COLS = 48
@@ -62,10 +61,9 @@ class Model(abc.ABC):
         plt.xlabel('Predicted label')
         plt.savefig(archivo)
 
-    def plot_classification_report(self, test_labels, predicted_labels):
-        report_dict = classification_report(test_labels, predicted_labels)
-        # dataframe = pd.DataFrame.from_dict(report_dict)
-        print(report_dict)
+    def plot_classification_report(self):
+        # classification_report(y_test, y_pred)
+        pass
 
     def __get_image_data(self, image):
         return resize(cvtColor(imread(image), COLOR_RGB2GRAY), (IMG_ROWS, IMG_COLS))
