@@ -2,7 +2,7 @@
 
 import sys
 from modelos.RandomForest import RandomForest
-
+from modelos.SVM import SVM
 
 def modo_de_uso():
     print("""Modo de uso: 
@@ -19,7 +19,7 @@ def get_modelo(modelo_elegido):
     if modelo_elegido == 'rf':
         return RandomForest()
     elif modelo_elegido == 'svm':
-        error("Modelo no implementado")
+        return SVM()
     elif modelo_elegido == 'cnn':
         error("Modelo no implementado")
     else:
