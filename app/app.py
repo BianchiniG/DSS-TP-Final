@@ -1,5 +1,5 @@
 import cv2
-from flask import Flask, render_template, Response, jsonify
+from flask import Flask, render_template, request, Response, jsonify
 from Reconocimiento import Reconocimiento
 
 app = Flask(__name__)
@@ -26,6 +26,22 @@ def gen_frames():
 @app.route('/')
 def index():
     return render_template('index.html')
+
+
+@app.route('/visualizacion')
+def visualizacion():
+    modelo = request.args.get('modelo')
+    return render_template('visualizacion.html', data=modelo)
+
+
+@app.route('/prueba')
+def prueba():
+    return render_template('prueba.html')
+
+
+@app.route('/not_found')
+def not_found():
+    return render_template('404.html')
 
 
 @app.route('/video_feed')

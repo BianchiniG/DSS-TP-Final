@@ -2,24 +2,34 @@
 
 import os
 import sys
+import shutil
 import tarfile
 from zipfile import ZipFile
 from Preprocesamiento import Preprocesamiento
 from modelos.RandomForest import RandomForest
 from modelos.SVM import SVM
+from modelos.utiles import DB_BASEPATH, \
+    FACESGOOGLESET_ROUTE, \
+    FACESDB_ROUTE, \
+    FER_ROUTE, \
+    FACESDB_FULL_PATH, \
+    FACESGOOGLESETDB_FULL_PATH, \
+    FERDB_FULL_PATH, \
+    FACESDB_COMPRESSED_FILE, \
+    FACESGOOGLESET_COMPRESSED_FILE, \
+    FER_ORIGINAL_FILE
 
 DATABASES_BASEPATH = '/app/datos/datasets/'
-GOOGLESET_COMPRESSED_FILE = '/app/datos/datasets/faces-googleset.zip'
-FACESDB_COMPRESSED_FILE = '/app/datos/datasets/faces-db.tar.xz'
-FER_FILE = '/app/datos/datasets/fer2013.csv'
 MODELOS = ['rf', 'svm', 'cnn']
 
 
 def usage():
     print("""Modo de uso: 
     python command.py <args>
-        * Inicializar:
+        * Inicializar bases de datos:
             - args: init
+        * Inicializar bases de datos de landmarks (Cuidado! Es un proceso lento!):
+            - args: init_landmarks
         * Entrenar modelo:
             - args: <rf|svm|cnn> fit
         * Ejecutar predicción:
@@ -46,6 +56,8 @@ def exec_command(argumentos):
         wrong_call()
     elif argumentos[1] == 'init':
         init_app_databases()
+    elif argumentos[1] == 'init_landmarks':
+        init_app_landmarks_databases()
     elif argumentos[1] == 'h':
         usage()
         exit(0)
@@ -69,15 +81,29 @@ def init_app_databases():
     print("> Generando archivos de bases de datos")
     generate_db_files()
     print(">> Procesando fer database")
-    p.export_fer_dataset()
+    if not os.path.exists(DB_BASEPATH+FER_ROUTE) and os.path.exists(FER_ORIGINAL_FILE):
+        os.mkdir(DB_BASEPATH+FER_ROUTE)
+        p.export_fer_dataset()
+    else:
+        print(">>> El sataset de fer ya fue procesado")
     print(">> Generando...")
     p.preprocess_databases()
     init_cleanup()
 
 
+def init_app_landmarks_databases():
+    if os.path.exists(FACESDB_FULL_PATH) and os.path.exists(FACESGOOGLESETDB_FULL_PATH) and os.path.exists(FERDB_FULL_PATH):
+        p = Preprocesamiento()
+        p.generate_landmarks_dbs()
+
+
 def generate_db_files():
-    extract_files(GOOGLESET_COMPRESSED_FILE, DATABASES_BASEPATH+'faces-googleset', 'zip')
-    extract_files(FACESDB_COMPRESSED_FILE, DATABASES_BASEPATH+'faces-db', 'tar')
+    if os.path.exists(FACESDB_COMPRESSED_FILE) and not os.path.exists(DB_BASEPATH+FACESDB_ROUTE):
+        extract_files(FACESDB_COMPRESSED_FILE, DATABASES_BASEPATH+'faces-db', 'tar')
+        if os.path.exists(DB_BASEPATH+FACESDB_ROUTE+'kiss'):
+            shutil.rmtree(DB_BASEPATH+FACESDB_ROUTE+'kiss')
+    if os.path.exists(FACESGOOGLESET_COMPRESSED_FILE) and not os.path.exists(DB_BASEPATH+FACESGOOGLESET_ROUTE):
+        extract_files(FACESGOOGLESET_COMPRESSED_FILE, DATABASES_BASEPATH+'faces-googleset', 'zip')
 
 
 def extract_files(filename, target_extraction_folder, type):
@@ -98,9 +124,11 @@ def extract_files(filename, target_extraction_folder, type):
 
 
 def init_cleanup():
-    for filename in [GOOGLESET_COMPRESSED_FILE, FACESDB_COMPRESSED_FILE, FER_FILE]:
+    for filename in [FACESGOOGLESET_COMPRESSED_FILE, FACESDB_COMPRESSED_FILE, FER_ORIGINAL_FILE]:
         if os.path.exists(filename):
             os.remove(filename)
+    if os.path.exists(DB_BASEPATH+FACESDB_ROUTE+'kiss'):
+        shutil.rmtree(DB_BASEPATH+FACESDB_ROUTE+'kiss')
 
 
 def wrong_call():

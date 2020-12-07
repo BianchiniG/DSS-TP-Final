@@ -1,4 +1,6 @@
+import os
 import abc
+import ast
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -7,12 +9,13 @@ from sklearn.metrics import classification_report
 from sklearn.model_selection import learning_curve
 from .utiles import get_label_by_emotion, \
     DB_BASEPATH, \
-    FER_ROUTE, \
-    FACESDB_ROUTE, \
-    FACESGOOGLESET_ROUTE, \
-    EMOCIONES, \
-    IMG_ROWS, \
-    IMG_COLS
+    FACESDB_FULL_PATH, \
+    FACESGOOGLESETDB_FULL_PATH, \
+    FERDB_FULL_PATH, \
+    FACESDB_LANDMARKS_FULL_PATH, \
+    FACESGOOGLESETDB_LANDMARKS_FULL_PATH, \
+    FERDB_LANDMARKS_FULL_PATH, \
+    EMOCIONES
 
 
 class Model(abc.ABC):
@@ -38,18 +41,48 @@ class Model(abc.ABC):
         images = []
         labels = []
 
-        faces_db = pd.read_csv(FACESDB_ROUTE)
+        faces_db = pd.read_csv(FACESDB_FULL_PATH)
         for index, row in faces_db.iterrows():
-            images.append(DB_BASEPATH+row.imagen)
+            images.append(row.imagen)
             labels.append(get_label_by_emotion(row.clase))
-        faces_google_set_db = pd.read_csv(FACESGOOGLESET_ROUTE)
+        faces_google_set_db = pd.read_csv(FACESGOOGLESETDB_FULL_PATH)
         for index, row in faces_google_set_db.iterrows():
-            images.append(DB_BASEPATH+row.imagen)
+            images.append(row.imagen)
             labels.append(get_label_by_emotion(row.clase))
-        fer_db = pd.read_csv(FER_ROUTE)
+        fer_db = pd.read_csv(FERDB_FULL_PATH)
         for index, row in fer_db.iterrows():
             images.append(row.imagen)
             labels.append(get_label_by_emotion(row.clase))
+
+        return images, labels
+
+    def get_image_landmarks_and_labels_for_training(self):
+        images = []
+        labels = []
+
+        if os.path.exists(FACESDB_LANDMARKS_FULL_PATH):
+            faces_db = pd.read_csv(FACESDB_LANDMARKS_FULL_PATH)
+            for index, row in faces_db.iterrows():
+                images.append(ast.literal_eval(row.imagen))
+                labels.append(get_label_by_emotion(row.clase))
+        else:
+            print("Se saltea "+FACESDB_LANDMARKS_FULL_PATH+" porque no existe")
+
+        if os.path.exists(FACESGOOGLESETDB_LANDMARKS_FULL_PATH):
+            faces_google_set_db = pd.read_csv(FACESGOOGLESETDB_LANDMARKS_FULL_PATH)
+            for index, row in faces_google_set_db.iterrows():
+                images.append(ast.literal_eval(row.imagen))
+                labels.append(get_label_by_emotion(row.clase))
+        else:
+            print("Se saltea "+FACESGOOGLESETDB_LANDMARKS_FULL_PATH+" porque no existe")
+
+        if os.path.exists(FERDB_LANDMARKS_FULL_PATH):
+            fer_db = pd.read_csv(FERDB_LANDMARKS_FULL_PATH)
+            for index, row in fer_db.iterrows():
+                images.append(ast.literal_eval(row.imagen))
+                labels.append(get_label_by_emotion(row.clase))
+        else:
+            print("Se saltea "+FERDB_LANDMARKS_FULL_PATH+" porque no existe")
 
         return images, labels
 
@@ -102,6 +135,3 @@ class Model(abc.ABC):
         report_dict = classification_report(test_labels, predicted_labels)
         # dataframe = pd.DataFrame.from_dict(report_dict)
         print(report_dict)
-
-    def __get_image_data(self, image):
-        return resize(cvtColor(imread(image), COLOR_RGB2GRAY), (IMG_ROWS, IMG_COLS))

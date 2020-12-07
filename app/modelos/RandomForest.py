@@ -1,7 +1,5 @@
 import sys
 sys.path.append("..")
-import cv2
-import dlib
 import joblib
 import random
 import numpy as np
@@ -10,7 +8,7 @@ from sklearn.metrics import confusion_matrix
 from sklearn.ensemble import RandomForestClassifier, BaggingClassifier, RandomForestRegressor
 from Preprocesamiento import Preprocesamiento
 from .Model import Model
-from .utiles import EMOCIONES, RF_TRAINED_MODEL_FILE, LANDMARKS_SHAPE_PREDICTOR_FILE
+from .utiles import EMOCIONES, RF_TRAINED_MODEL_FILE
 
 N_ESTIMATORS = 100
 BETWEEN_EYES_LANDMARK = 26
@@ -21,7 +19,7 @@ TRAINED_LEARNING_CURVE_PLOT = '/app/static/img/random_forest_fit_learning_curve.
 
 class RandomForest(Model):
     def fit(self):
-        images, labels = self.get_images_and_labels_for_training()
+        images, labels = self.get_image_landmarks_and_labels_for_training()
         image_labels = self.__get_labeled_images(images, labels)
         print('Extrayendo landmarks de las imagenes y dividiendo el dataset en entrenamiento/pruebas')
         train_data, test_data, train_label, test_label = self.__get_data_sets(image_labels)
@@ -35,21 +33,20 @@ class RandomForest(Model):
     def predict(self, image):
         preprocesador = Preprocesamiento()
         model = joblib.load(RF_TRAINED_MODEL_FILE)
-        prediction = model.predict(np.array(self.__get_landmarks(preprocesador.preprocess_image(image))).reshape(1, -1))
+        prediction = model.predict(np.array(preprocesador.get_landmarks(preprocesador.preprocess_image(image))).reshape(1, -1))
         return EMOCIONES[prediction[0]]
 
     def __train_model(self, test_data, test_label, train_data, train_label):
         start_time = time()
-        rf_model = RandomForestClassifier(n_estimators=N_ESTIMATORS, max_features=6)
-
-        model = BaggingClassifier(base_estimator=rf_model, n_estimators=N_ESTIMATORS,
-                                  bootstrap=True, n_jobs=-1,
-                                  random_state=42)
+        rf_model = RandomForestClassifier(n_estimators=N_ESTIMATORS,
+                                          max_features=6,
+                                          random_state=42,
+                                          criterion='entropy')
         train_data = np.asarray(train_data)
         train_label = np.asarray(train_label)
         test_data = np.asarray(test_data)
         test_label = np.asarray(test_label)
-        model.fit(train_data, train_label)
+        rf_model.fit(train_data, train_label)
         # print("Obtenemos el puntaje de ajuste del modelo...")
         # print("- Para los datos de entrenamiento:", model.score(train_data, train_label))
         # print("- Para los datos de prueba:", model.score(test_data, test_label))
@@ -58,7 +55,7 @@ class RandomForest(Model):
         self.plot_learning_curve(RandomForestRegressor(), 'Curva de Aprendizaje usando regresor Random Forest',
                                  'Tamaño del set de pruebas', 'Errores', test_data, test_label,
                                  archivo=TRAINED_LEARNING_CURVE_PLOT)
-        return model, test_data, test_label
+        return rf_model, test_data, test_label
 
     def __test_model(self, rf_clf, test_data, test_label):
         start_time = time()
@@ -78,73 +75,14 @@ class RandomForest(Model):
         test_data = []
         train_label = []
         test_label = []
-
-        start_time = time()
         train_image_labels = image_labels[:int(len(image_labels) * 0.8)]
         test_image_labels = image_labels[-int(len(image_labels) * 0.2):]
 
         for item in train_image_labels:
-            try:
-                train_data.append(self.__get_landmarks(cv2.imread(item[0])))
-                train_label.append(item[1])
-            except Exception:
-                print("No se detecto una cara en la imagen: "+item[0])
-
-        train_time = time() - start_time
-        print('Dataset de entrenamiento extraído en %f segundos' % train_time)
-
+            train_data.append(item[0])
+            train_label.append(item[1])
         for item in test_image_labels:
-            try:
-                test_data.append(self.__get_landmarks(cv2.imread(item[0])))
-                test_label.append(item[1])
-            except Exception:
-                print("No se detecto una cara en la imagen: "+item[0])
-
-        print('Dataset de pruebas extraído en %f segundos' % (time() - train_time))
+            test_data.append(item[0])
+            test_label.append(item[1])
 
         return train_data, test_data, train_label, test_label
-
-    def __get_landmarks(self, image):
-        detector = dlib.get_frontal_face_detector()
-        predictor = dlib.shape_predictor(LANDMARKS_SHAPE_PREDICTOR_FILE)
-        image = image.copy()
-        detections = detector(image, 1)
-
-        for k, detection in enumerate(detections):
-            shape = predictor(image, detection)
-            x_list = []
-            y_list = []
-            for i in range(1, 68):
-                x_list.append(float(shape.part(i).x))
-                y_list.append(float(shape.part(i).y))
-
-            x_mean = x_list[NOSE_TIP_LANDMARK]
-            y_mean = y_list[NOSE_TIP_LANDMARK]
-            x_central = [(x - x_mean) for x in x_list]
-            y_central = [(y - y_mean) for y in y_list]
-
-            angle_nose = np.arctan2(
-                (y_list[BETWEEN_EYES_LANDMARK] - y_mean), (x_list[BETWEEN_EYES_LANDMARK] - x_mean)
-            ) * 180 / np.pi
-            if angle_nose < 0:
-                angle_nose += 90
-            else:
-                angle_nose -= 90
-
-            landmarks_vectorised = []
-            for i in range(0, 67):
-                rx = x_central[i]
-                ry = y_central[i]
-                x = x_list[i]
-                y = y_list[i]
-                landmarks_vectorised.append(rx)
-                landmarks_vectorised.append(ry)
-                dist = np.linalg.norm(np.array([rx, ry]))
-                landmarks_vectorised.append(dist)
-                angle_relative = (np.arctan2((-ry), (-rx)) * 180 / np.pi) - angle_nose
-                landmarks_vectorised.append(angle_relative)
-
-        if len(detections) < 1:
-            raise Exception("No se detecto una cara en la imagen")
-
-        return landmarks_vectorised
