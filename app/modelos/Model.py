@@ -40,11 +40,11 @@ class Model(abc.ABC):
 
         faces_db = pd.read_csv(FACESDB_ROUTE)
         for index, row in faces_db.iterrows():
-            images.append(DB_BASEPATH+row.imagen)
+            images.append(row.imagen)
             labels.append(get_label_by_emotion(row.clase))
         faces_google_set_db = pd.read_csv(FACESGOOGLESET_ROUTE)
         for index, row in faces_google_set_db.iterrows():
-            images.append(DB_BASEPATH+row.imagen)
+            images.append(row.imagen)
             labels.append(get_label_by_emotion(row.clase))
         fer_db = pd.read_csv(FER_ROUTE)
         for index, row in fer_db.iterrows():

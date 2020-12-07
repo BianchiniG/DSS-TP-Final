@@ -50,8 +50,8 @@ class Preprocesamiento:
         if self.__databases_not_created():
             self.__create_dbs()
 
-        databases = [DB_BASEPATH+'/'+FACESDB_FOLDER+'/'+FACESDB_OUT_FILENAME,
-                     DB_BASEPATH+'/'+FACESGOOGLESET_FOLDER+'/'+FACESGOOGLESET_OUT_FILENAME]
+        databases = [DB_BASEPATH+FACESDB_FOLDER+'/'+FACESDB_OUT_FILENAME,
+                     DB_BASEPATH+FACESGOOGLESET_FOLDER+'/'+FACESGOOGLESET_OUT_FILENAME]
         for database in databases:
             df = pd.read_csv(database)
 
@@ -61,6 +61,12 @@ class Preprocesamiento:
                     cv2.imwrite(os.path.join(DB_BASEPATH, str(row.imagen)), self.preprocess_image(imagen))
                 except Exception:
                     print("No se detecto una cara en la foto: "+os.path.join(DB_BASEPATH, row.imagen))
+                    os.remove(os.path.join(DB_BASEPATH, row.imagen))
+                    df = df.drop(index)
+            os.remove(database)
+            df.to_csv(database)
+
+
 
     def __create_dbs(self):
         dataframe = pd.DataFrame(data=[], columns=['index', 'imagen', 'clase'])
