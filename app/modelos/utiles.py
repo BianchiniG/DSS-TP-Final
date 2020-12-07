@@ -12,20 +12,19 @@ EMOCIONES = {
     0: 'anger',
     1: 'fear',
     2: 'happy',
-    3: 'kiss',
-    4: 'neutral',
-    5: 'sadness',
-    6: 'disgust',
-    7: 'surprise'
+    3: 'neutral',
+    4: 'sadness',
+    5: 'disgust',
+    6: 'surprise'
 }
 FER_DATASET_MAP = {
     0: 0,
-    1: 6,
+    1: 5,
     2: 1,
     3: 2,
-    4: 5,
-    5: 7,
-    6: 4
+    4: 4,
+    5: 6,
+    6: 3
 }
 
 IMG_ROWS = 48
