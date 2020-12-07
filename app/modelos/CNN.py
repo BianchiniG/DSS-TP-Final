@@ -153,6 +153,7 @@ class CNN(Model):
                 #horizontal_flip = True,
                 fill_mode = 'nearest')
 
+        print(len(train_data))
         history = model.fit(train_data,train_label,validation_data=(test_data,test_label), batch_size=batch_size, epochs=epochs, verbose=1)
         #historia = model.fit(datagen.flow(train_data,train_label,shuffle=True),batch_size=batch_size,
         #                    validation_data=(test_data,test_label), epochs=100, verbose=1)
