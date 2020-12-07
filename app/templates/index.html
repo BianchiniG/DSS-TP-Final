@@ -11,24 +11,36 @@
 {% block content %}
 <div class="row content">
   <div class="col-md-12">
-    <img class="video" src="{{ url_for('video_feed') }}">
+    <div class="card">
+      <div class="card-body">
+        <img class="video" src="{{ url_for('video_feed') }}">
+      </div>
+    </div>
   </div>
-  <div class="col-md-12">
-    <div class="content">
-      <h3>Resultados</h3>
-      <div class="row">
-        <table class="tabla-resultados">
-          <thead>
-            <th>Random Forest + BAGGing</th>
-            <th>SMV</th>
-            <th>Neural Network</th>
-          </thead>
-          <tbody>
-            <td class="rf"></td>
-            <td class="svm"></td>
-            <td class="cnn"></td>
-          </tbody>
-        </table>
+</div>
+
+<div class="content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-body">
+          <h2>Resultados</h2>
+          <p class="error"></p>
+          <div class="row">
+            <div class="col-md-4">
+              <h4>Random Forest + BAGGing</h4>
+              <p class="rf"></p>
+            </div>
+            <div class="col-md-4">
+              <h4>SMV</h4>
+              <p class="svm"></p>
+            </div>
+            <div class="col-md-4">
+              <h4>Neural Network</h4>
+              <p class="cnn"></p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

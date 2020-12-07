@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<div class="row header">
+  <div class="col-md-12">
+    <h1>{% block title %}Visualización{% endblock %}</h1>
+  </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-12">
+    {% if data == 'rf'  %}
+      {% include '/visualizaciones/rf.html' %}
+    {% elif data == 'svm' %}
+      {% include '/visualizaciones/svm.html' %}
+    {% elif data == 'cnn' %}
+      {% include '/visualizaciones/cnn.html' %}
+    {% elif data == 'todos' %}
+      {% include '/visualizaciones/conclusiones.html' %}
+    {% else %}
+      <p>Modelo no encontrado</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

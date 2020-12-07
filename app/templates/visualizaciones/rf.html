@@ -1,0 +1,64 @@
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-12">
+                <h3><b>Acerca de Random Forest</b></h3>
+                <p>Es un método versátil de aprendizaje automático capaz de realizar tanto tareas de regresión como de clasificación. También lleva a cabo métodos de reducción dimensional, trata valores perdidos, valores atípicos y otros pasos esenciales de exploración de datos. Es un tipo de método de aprendizaje por conjuntos, donde un grupo de modelos débiles se combinan para formar un modelo poderoso.</p>
+                <p>En Random Forest se ejecutan varios algoritmos de árbol de decisiones en lugar de uno solo. Para clasificar un nuevo objeto basado en atributos, cada árbol de decisión da una clasificación y finalmente la decisión con mayor “votos” es la predicción del algoritmo.</p>
+                <p>Funcionamiento:</p>
+                <ul>
+                    <li>Seleccionar k features (columnas) de las m totales (siendo k menor a m) y crear un árbol de decisión con esas k características.</li>
+                    <li>Crear n árboles variando siempre la cantidad de k features y también se podría variar la cantidad de muestras que se pasan a esos árboles (esto es conocido como “bootstrap sample”)</li>
+                    <li>Tomar cada uno de los n árboles y pedir que hagan una misma clasificación. Guardar el resultado de cada árbol obteniendo n salidas.</li>
+                    <li>Calcular los votos obtenidos para cada “clase” seleccionada y considerar a la más votada como la clasificación final del “bosque”.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h3><b>Resultados del trabajo</b></h3>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h4><i>Curva de Aprendizaje con el dataset de la cátedra</i></h4>
+                <img src="{{ url_for('static', filename='img/random_forest_fit_learning_curve_old.png') }}" width="100%">
+                <p>Durante la fase de entrenamiento (Training), logramos observar que el modelo tiene Underfitting.</p>
+                <p>Underfitting se refiere a un modelo que no puede aprender el conjunto de datos de entrenamiento.</p>
+                <p>Este desajuste se produce cuando el modelo no puede obtener un valor de error suficientemente bajo en el conjunto de entrenamiento.</p>
+                <hr>
+                <h4><i>Curva de Aprendizaje con el dataset aumentado</i></h4>
+                <img src="{{ url_for('static', filename='img/random_forest_fit_learning_curve.png') }}" width="100%">
+                <p>Texto</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h4><i>Matriz de Confusion con el dataset de la cátedra</i></h4>
+                <img src="{{ url_for('static', filename='img/random_forest_fit_confusion_matrix_without_bootstrap_old.png') }}" width="100%">
+                <p>Luego del entrenamiento del modelo, para poder verificar su precisión (accuracy) y para mostrar de forma explícita cuando una clase es confundida con otra se realizaron matrices de confusión.</p>
+                <p>En este caso, podemos observar que el modelo “predice” en general las mismas emociones (clases). Este efecto es causado mayormente por el Underfitting del modelo, y por el bajo número de datos del dataset de entrada, como así también el gran desbalance del dataset. Se puede observar por la concentracion de color en las clases de la matriz.</p>
+                <img src="{{ url_for('static', filename='img/random_forest_fit_confusion_matrix_old.png') }}" width="100%">
+                <p>En el siguiente experimento, se entrenó el modelo utilizando Bootstrap (con el mismo dataset de entrada). En este caso se observa una performance mucho más regular del modelo logrando “predecir” de una manera más correcta y variada entre las emociones o clases.</p>
+                <p>Igualmente, el modelo tiende a confundir en un alto grado las clases o emociones del modelo.</p>
+                <hr>
+                <h4><i>Matriz de confusión con el dataset aumentado</i></h4>
+                <img src="{{ url_for('static', filename='img/random_forest_fit_confusion_matrix.png') }}" width="100%">
+                <p><i>NOTA: Se sacó el paso de bagging y se configuró al clasificador de Random Forest por temas de rendimiento</i></p>
+            </div>
+        </div>
+    </div>
+</div>

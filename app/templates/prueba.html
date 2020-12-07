@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<div class="row header">
+  <div class="col-md-12">
+    <h1>{% block title %}Prueba reconocimiento de Emociones{% endblock %}</h1>
+  </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="row content">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-body">
+        <p class="error-load"></p>
+        <form>
+          <div class="form-group">
+            <label for="foto">Ingrese una imágen para procesar por los modelos</label>
+            <br>
+            <input type="file" class="form-control-file" id="foto" onchange="load_image(this);" style="display: initial; width: 20%;">
+            <br>
+            <br>
+            <img id="selected-image" src="#" alt="Imagen seleccionada" style="display: none;"/>
+          </div>
+          <button id="procesar-imagen" class="btn btn-primary mb-2">¡Procesar Foto!</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-body">
+          <h2>Resultados</h2>
+          <p class="error"></p>
+          <div class="row">
+            <div class="col-md-4">
+              <h4>Random Forest + BAGGing</h4>
+              <p class="rf"></p>
+            </div>
+            <div class="col-md-4">
+              <h4>SMV</h4>
+              <p class="svm"></p>
+            </div>
+            <div class="col-md-4">
+              <h4>Neural Network</h4>
+              <p class="cnn"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+  <script src="{{url_for('static', filename='js/predict_image.js')}}"></script>
+{% endblock %}
