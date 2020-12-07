@@ -17,8 +17,8 @@ import random
 from time import time
 from keras.preprocessing.image import ImageDataGenerator
 
-TRAINED_CONFUSION_MATRIX_PLOT = '/app/static/img/CNN_fit_confusion_matrix7.png'
-TRAINED_LEARNING_CURVE_PLOT = '/app/static/img/CNN_fit_learning_curve.png'
+TRAINED_CONFUSION_MATRIX_PLOT = '/app/static/img/CNN_fit_confusion_matrix8.png'
+TRAINED_LEARNING_CURVE_PLOT = '/app/static/img/CNN_fit_learning_curve8.png'
 
 class CNN(Model):
     def fit(self):
@@ -73,15 +73,23 @@ class CNN(Model):
         train_image_labels = image_labels[:int(len(image_labels) * 0.8)]
         test_image_labels = image_labels[-int(len(image_labels) * 0.2):]
 
+        print(len(train_image_labels))
+        print(len(test_image_labels))
         for item in train_image_labels:
-            train_data.append(self.__convert_image(item[0]))
+            image = cv2.imread(item[0],0)
+            if len(image)>48:
+                print(str(len(image))+' '+item[0])
+            train_data.append(image)
             train_label.append(item[1])
 
         train_time = time() - start_time
         print('Dataset de entrenamiento extraído en %f segundos' % train_time)
 
         for item in test_image_labels:
-            test_data.append(self.__convert_image(item[0]))
+            image = cv2.imread(item[0],0)
+            if len(image)>48:
+                print(str(len(image))+' '+item[0])
+            test_data.append(image)
             test_label.append(item[1])
 
         print('Dataset de pruebas extraído en %f segundos' % (time() - train_time))
@@ -105,7 +113,7 @@ class CNN(Model):
     
     def __train_model(self, test_data, test_label, train_data, train_label):
         batch_size = 64
-        epochs = 100
+        epochs = 40
 
         start_time = time()
         
@@ -133,7 +141,6 @@ class CNN(Model):
 
         #opt = SGD(lr=0.001, momentum=0.9, decay=0.01)
         model.compile(optimizer='adam',loss='categorical_crossentropy',metrics=['accuracy'])
-        #model.compile(optimizer=opt,loss='categorical_crossentropy',metrics=['accuracy'])
         
         datagen = ImageDataGenerator(
                 rotation_range = 5,
@@ -146,9 +153,9 @@ class CNN(Model):
                 #horizontal_flip = True,
                 fill_mode = 'nearest')
 
-        #history = model.fit(train_data,train_label,validation_data=(test_data,test_label), batch_size=batch_size, epochs=epochs, verbose=1)
-        historia = model.fit(datagen.flow(train_data,train_label,shuffle=True),batch_size=batch_size,
-                            validation_data=(test_data,test_label), epochs=100, verbose=1)
+        history = model.fit(train_data,train_label,validation_data=(test_data,test_label), batch_size=batch_size, epochs=epochs, verbose=1)
+        #historia = model.fit(datagen.flow(train_data,train_label,shuffle=True),batch_size=batch_size,
+        #                    validation_data=(test_data,test_label), epochs=100, verbose=1)
         
         print('El entrenamiento finalizó en %f segundos' % (time() - start_time))
         # self.plot_classification_report()
@@ -174,10 +181,10 @@ class CNN(Model):
         plt.legend()
         plt.savefig(TRAINED_LEARNING_CURVE_PLOT)
 
-    def __convert_image(self, str_image):
-        image = cv2.imread(str_image,0)
-        image = cv2.resize(image, (48, 48))
-        return image
+    #def __convert_image(self, str_image):
+    #    image = cv2.imread(str_image,0)
+    #    image = cv2.resize(image, (48, 48))
+    #    return image
 
     #'../datos/datasets/faces-googleset/happy/google_016.jpg'
     def cargar_imagen(self,ruta):
