@@ -5,7 +5,14 @@ import matplotlib.pyplot as plt
 from cv2 import imread, cvtColor, COLOR_RGB2GRAY, resize
 from sklearn.metrics import classification_report
 from sklearn.model_selection import learning_curve
-from .utiles import get_label_by_emotion, DB_BASEPATH, FACESDB_ROUTE, FACESGOOGLESET_ROUTE, EMOCIONES, IMG_ROWS, IMG_COLS
+from .utiles import get_label_by_emotion, \
+    DB_BASEPATH, \
+    FER_ROUTE, \
+    FACESDB_ROUTE, \
+    FACESGOOGLESET_ROUTE, \
+    EMOCIONES, \
+    IMG_ROWS, \
+    IMG_COLS
 
 
 class Model(abc.ABC):
@@ -38,6 +45,10 @@ class Model(abc.ABC):
         faces_google_set_db = pd.read_csv(FACESGOOGLESET_ROUTE)
         for index, row in faces_google_set_db.iterrows():
             images.append(DB_BASEPATH+row.imagen)
+            labels.append(get_label_by_emotion(row.clase))
+        fer_db = pd.read_csv(FER_ROUTE)
+        for index, row in fer_db.iterrows():
+            images.append(row.imagen)
             labels.append(get_label_by_emotion(row.clase))
 
         return images, labels
