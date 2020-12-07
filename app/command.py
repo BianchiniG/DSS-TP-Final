@@ -1,17 +1,31 @@
 #!/usr/bin/python
 
+import os
 import sys
+import tarfile
+from zipfile import ZipFile
+from Preprocesamiento import Preprocesamiento
 from modelos.RandomForest import RandomForest
 from modelos.SVM import SVM
 
-def modo_de_uso():
+DATABASES_BASEPATH = '/app/datos/datasets/'
+GOOGLESET_COMPRESSED_FILE = '/app/datos/datasets/faces-googleset.zip'
+FACESDB_COMPRESSED_FILE = '/app/datos/datasets/faces-db.tar.xz'
+FER_FILE = '/app/datos/datasets/fer2013.csv'
+MODELOS = ['rf', 'svm', 'cnn']
+
+
+def usage():
     print("""Modo de uso: 
-    python command.py <nombre_modelo> <fit>|<predict> <imagen>
-        * El parámetro imagen es necesario solo para el predict
-        * Los posibles modelos son:
-            - rf (Random Forest)
-            - svm (Máquina Vectorial)
-            - cnn (Red Neuronal)
+    python command.py <args>
+        * Inicializar:
+            - args: init
+        * Entrenar modelo:
+            - args: <rf|svm|cnn> fit
+        * Ejecutar predicción:
+            - args: <rf|svm|cnn> predict <url_imagen>
+        * Ayuda:
+            - args: h
     """)
 
 
@@ -26,23 +40,72 @@ def get_modelo(modelo_elegido):
         error("El modelo elegido ("+modelo_elegido+") no existe")
 
 
-def ejecutar_comando(modelo, opciones):
-    if opciones[2] == 'fit':
-        modelo.fit()
-    elif opciones[2] == 'predict':
-        if len(opciones) < 4:
-            modo_de_uso()
-            exit(1)
-        else:
-            modelo.predict(opciones[3])
-
-
-def args_error(argumentos):
-    if len(argumentos) == 1 or len(argumentos) < 3 or argumentos[1] == 'h':
-        modo_de_uso()
-        exit(1)
+def exec_command(argumentos):
+    print("Executing...")
+    if len(argumentos) == 1:
+        wrong_call()
+    elif argumentos[1] == 'init':
+        init_app_databases()
+    elif argumentos[1] == 'h':
+        usage()
+        exit(0)
+    elif argumentos[1] in MODELOS:
+        modelo = get_modelo(argumentos[1])
+        if argumentos[2] == 'fit':
+            modelo.fit()
+        elif argumentos[2] == 'predict':
+            if len(argumentos) < 4:
+                usage()
+                exit(1)
+            else:
+                modelo.predict(argumentos[3])
     else:
-        return False
+        wrong_call()
+
+
+def init_app_databases():
+    print("Initializing...")
+    p = Preprocesamiento()
+    print("> Generando archivos de bases de datos")
+    generate_db_files()
+    print(">> Procesando fer database")
+    p.export_fer_dataset()
+    print(">> Generando...")
+    p.preprocess_databases()
+    init_cleanup()
+
+
+def generate_db_files():
+    extract_files(GOOGLESET_COMPRESSED_FILE, DATABASES_BASEPATH+'faces-googleset', 'zip')
+    extract_files(FACESDB_COMPRESSED_FILE, DATABASES_BASEPATH+'faces-db', 'tar')
+
+
+def extract_files(filename, target_extraction_folder, type):
+    try:
+        if type == 'zip':
+            zf = ZipFile(filename)
+            zf.extractall(path=target_extraction_folder)
+            zf.close()
+        elif type == 'tar':
+            tar = tarfile.open(filename)
+            tar.extractall(target_extraction_folder)
+            tar.close()
+        else:
+            error("El tipo del archivo es incorrecto")
+            return
+    except FileNotFoundError:
+        error("El archivo "+filename+" no existe")
+
+
+def init_cleanup():
+    for filename in [GOOGLESET_COMPRESSED_FILE, FACESDB_COMPRESSED_FILE, FER_FILE]:
+        if os.path.exists(filename):
+            os.remove(filename)
+
+
+def wrong_call():
+    usage()
+    exit(1)
 
 
 def error(mensaje):
@@ -50,5 +113,4 @@ def error(mensaje):
     exit(1)
 
 
-if not args_error(sys.argv):
-    ejecutar_comando(get_modelo(sys.argv[1]), sys.argv)
+exec_command(sys.argv)

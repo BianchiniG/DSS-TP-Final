@@ -1,3 +1,4 @@
 .idea/
 app/modelos/__pycache__
 app/__pycache__
+app/datos/datasets
