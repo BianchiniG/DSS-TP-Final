@@ -16,7 +16,7 @@ from .utiles import get_label_by_emotion, \
     FACESGOOGLESETDB_LANDMARKS_FULL_PATH, \
     FERDB_LANDMARKS_FULL_PATH, \
     EMOCIONES
-
+import itertools
 
 class Model(abc.ABC):
     @abc.abstractmethod
