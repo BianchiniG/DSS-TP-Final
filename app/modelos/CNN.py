@@ -175,9 +175,9 @@ class CNN(Model):
     #'../datos/datasets/faces-googleset/happy/google_016.jpg'
     def cargar_imagen(self,ruta):
         #imagen = cv2.imread(ruta,0)
-        imagen = cv2.resize(ruta, (48, 48))
+        #imagen = cv2.resize(ruta, (48, 48))
         images=[]
-        images.append(imagen)
+        images.append(ruta)
         X_images = np.array(images, dtype=np.uint8)
         test_X_images = X_images.astype('float32')
         test_X_images = test_X_images / 255
