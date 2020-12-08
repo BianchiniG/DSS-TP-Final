@@ -68,7 +68,7 @@ def process_image():
     image = request.files.get('file')
 
     npimg = np.fromfile(image, np.uint8)
-    file = cv2.imdecode(npimg, cv2.COLOR_BGR2GRAY)
+    file = cv2.imdecode(npimg, cv2.IMREAD_COLOR)
 
     predicciones = reconocimiento.ejecutar(file)
 
@@ -81,4 +81,4 @@ def not_found():
 
 
 if __name__ == '__main__':
-    app.run(debug=False, host='0.0.0.0', threaded=True)
+    app.run(debug=True, host='0.0.0.0', threaded=True)

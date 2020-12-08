@@ -47,6 +47,7 @@ $(document).ready(function() {
 
 function escribir_respuestas(respuesta) {
     if (respuesta !== undefined && respuesta !== null) {
+        console.log(respuesta)
         if (respuesta.rf) {
             window.rf_data = respuesta.rf;
         }
