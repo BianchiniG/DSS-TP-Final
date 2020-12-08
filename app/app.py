@@ -19,7 +19,6 @@ def gen_frames():
             break
         else:
             ret, buffer = cv2.imencode('.jpg', frame)
-            # reconocimiento.ejecutar(buffer)
             frame = buffer.tobytes()
             yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
@@ -51,18 +50,6 @@ def get_recon_results():
     return jsonify({})
 
 
-@app.route('/result/:model')
-def view_result(model):
-    if model == 'cnn':
-        return render_template('cnn_train_results.html')
-    elif model == 'rf':
-        return render_template('rf_train_results.html')
-    elif model == 'svm':
-        return render_template('svm_train_results.html')
-    else:
-        return render_template('not_found.html')
-
-
 @app.route('/process_image', methods=['GET', 'POST'])
 def process_image():
     image = request.files.get('file')
@@ -81,4 +68,4 @@ def not_found():
 
 
 if __name__ == '__main__':
-    app.run(debug=False, host='0.0.0.0', threaded=True)
+    app.run(debug=True, host='0.0.0.0', threaded=True)

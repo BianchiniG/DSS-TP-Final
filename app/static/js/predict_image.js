@@ -9,10 +9,11 @@ $(document).ready(function() {
     $("form").submit(function(e) {
         e.preventDefault(e);
     });
+    const image_proc_btn = $('#procesar-imagen');
 
     $("#procesar-imagen").on('click', function() {
-        $('#procesar-imagen').attr('disabled', true);
-        $('#procesar-imagen').html("Procesando...");
+        image_proc_btn.attr('disabled', true);
+        image_proc_btn.html("Procesando...");
 
         var form_data = new FormData();
         const input = $('#foto')[0].files;
@@ -27,21 +28,22 @@ $(document).ready(function() {
                     processData: false,
                     success: function(respuesta) {
                         escribir_respuestas(respuesta);
+                        image_proc_btn.html("¡Procesar imagen!");
+                        image_proc_btn.attr('disabled', false);
                     },
                     error: function() {
-                        $(".error").html("No se ha podido obtener la información");
+                        $(".error-load").html("No se ha podido obtener la información");
+                        image_proc_btn.html("¡Procesar imagen!");
+                        image_proc_btn.attr('disabled', false);
                     },
                     finally: function() {
-                        $('#procesar-imagen').html("¡Procesar imagen!");
-                        $('#procesar-imagen').attr('disabled', false);
+                        image_proc_btn.html("¡Procesar imagen!");
+                        image_proc_btn.attr('disabled', false);
                     }
                 });
         } else {
-            $('#error-load').html("Debe seleccionar una imágen!");
+            $('.error-load').html("Debe seleccionar una imágen!");
         }
-
-
-
     });
 });
 

@@ -33,7 +33,7 @@ class RandomForest(Model):
     def predict(self, image):
         preprocesador = Preprocesamiento()
         model = joblib.load(RF_TRAINED_MODEL_FILE)
-        prediction = model.predict(np.array(preprocesador.get_landmarks(preprocesador.preprocess_image(image))).reshape(1, -1))
+        prediction = model.predict(np.array(preprocesador.get_landmarks(image)).reshape(1, -1))
         return EMOCIONES[prediction[0]]
 
     def __train_model(self, test_data, test_label, train_data, train_label):
