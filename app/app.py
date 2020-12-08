@@ -41,8 +41,6 @@ def prueba():
     return render_template('prueba.html')
 
 
-
-
 @app.route('/video_feed')
 def video_feed():
     return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
@@ -50,7 +48,7 @@ def video_feed():
 
 @app.route('/recon_results')
 def get_recon_results():
-    return jsonify(reconocimiento.get_data())
+    return jsonify({})
 
 
 @app.route('/result/:model')
@@ -64,7 +62,8 @@ def view_result(model):
     else:
         return render_template('not_found.html')
 
-@app.route('/process_image', methods=['GET','POST'])
+
+@app.route('/process_image', methods=['GET', 'POST'])
 def process_image():
     image = request.files.get('file')
 
@@ -74,11 +73,12 @@ def process_image():
     predicciones = reconocimiento.ejecutar(file)
 
     return jsonify(predicciones)
-    
+
 
 @app.route('/not_found')
 def not_found():
     return render_template('404.html')
 
+
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', threaded=True)
+    app.run(debug=False, host='0.0.0.0', threaded=True)
