@@ -30,6 +30,9 @@ RF_TRAINED_MODEL_FILE = '/app/datos/trained/rf_trained_model.pkl'
 CNN_TRAINED_MODEL_FILE = '/app/datos/trained/cnn_trained_model.h5'
 SVM_TRAINED_MODEL_FILE = '/app/datos/trained/svm_trained_model.pkl'
 
+TRAINED_CONFUSION_MATRIX_PLOT = '/app/static/img/CNN_fit_confusion_matrix9.png'
+TRAINED_LEARNING_CURVE_PLOT = '/app/static/img/CNN_fit_learning_curve9.png'
+
 EMOCIONES = {
     0: 'anger',
     1: 'fear',

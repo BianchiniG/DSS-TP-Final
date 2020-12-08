@@ -11,19 +11,18 @@ from keras.losses import categorical_crossentropy
 from keras.optimizers import SGD
 from sklearn.metrics import confusion_matrix
 from keras.utils import np_utils
-from .utiles import EMOCIONES, CNN_TRAINED_MODEL_FILE
+from .utiles import EMOCIONES, CNN_TRAINED_MODEL_FILE, TRAINED_CONFUSION_MATRIX_PLOT, TRAINED_LEARNING_CURVE_PLOT
 from .Model import Model
 import random
 from time import time
 from keras.preprocessing.image import ImageDataGenerator
 
-TRAINED_CONFUSION_MATRIX_PLOT = '/app/static/img/CNN_fit_confusion_matrix8.png'
-TRAINED_LEARNING_CURVE_PLOT = '/app/static/img/CNN_fit_learning_curve8.png'
+
 
 class CNN(Model):
     def fit(self):
         images, labels = self.get_images_and_labels_for_training()
-        image_labels = self.__get_labeled_images(images, labels)
+        image_labels = self.__get_labeled_images(images[0:8000], labels[0:8000])
         
         train_data, test_data, train_label, test_label = self.__get_data_sets(image_labels)
         
@@ -33,8 +32,9 @@ class CNN(Model):
         
         print('Prediciendo CNN utilizando el set de prueba')
         confusion_matrix = self.__test_model(model, test_data, test_label)
-        self.plot_confusion_matrix(cm=confusion_matrix, archivo=TRAINED_CONFUSION_MATRIX_PLOT)
-        self.__plot_learning_curve(historia)
+        self.plot_confusion_matrix(cm=confusion_matrix, normalize=False, archivo=TRAINED_CONFUSION_MATRIX_PLOT)
+        self.__plot_learning_curve(historia,TRAINED_LEARNING_CURVE_PLOT)
+        scores = model.evaluate(test_data, test_label, verbose=0)
         
 
     def __test_model(self, cnn_clf, test_data, test_label):
@@ -73,12 +73,8 @@ class CNN(Model):
         train_image_labels = image_labels[:int(len(image_labels) * 0.8)]
         test_image_labels = image_labels[-int(len(image_labels) * 0.2):]
 
-        print(len(train_image_labels))
-        print(len(test_image_labels))
         for item in train_image_labels:
             image = cv2.imread(item[0],0)
-            if len(image)>48:
-                print(str(len(image))+' '+item[0])
             train_data.append(image)
             train_label.append(item[1])
 
@@ -87,8 +83,6 @@ class CNN(Model):
 
         for item in test_image_labels:
             image = cv2.imread(item[0],0)
-            if len(image)>48:
-                print(str(len(image))+' '+item[0])
             test_data.append(image)
             test_label.append(item[1])
 
@@ -135,11 +129,9 @@ class CNN(Model):
         model.add(Activation('elu'))
         model.add(Dropout(0.5))
         model.add(Dense(len(EMOCIONES)))        #neuronas finales
-        #model.add(Dense(len(EMOCIONES),activation='softmax'))        #neuronas finales
+        
         model.add(Activation('softmax')) #para clasificar emociones entrantes
-        #model.summary()
 
-        #opt = SGD(lr=0.001, momentum=0.9, decay=0.01)
         model.compile(optimizer='adam',loss='categorical_crossentropy',metrics=['accuracy'])
         
         datagen = ImageDataGenerator(
@@ -153,39 +145,31 @@ class CNN(Model):
                 #horizontal_flip = True,
                 fill_mode = 'nearest')
 
-        print(len(train_data))
-        history = model.fit(train_data,train_label,validation_data=(test_data,test_label), batch_size=batch_size, epochs=epochs, verbose=1)
+        historia = model.fit(train_data,train_label,validation_data=(test_data,test_label), batch_size=batch_size, epochs=epochs, verbose=1)
         #historia = model.fit(datagen.flow(train_data,train_label,shuffle=True),batch_size=batch_size,
         #                    validation_data=(test_data,test_label), epochs=100, verbose=1)
         
         print('El entrenamiento finalizó en %f segundos' % (time() - start_time))
         # self.plot_classification_report()
         
-        #scores = model.evaluate(test_data, test_label, verbose=0)
-
         return model, test_data, test_label, historia
 
-    def __plot_learning_curve(self, historia):
+    def __plot_learning_curve(self, historia,archivo):
         accuracy = historia.history['accuracy']
         val_accuracy = historia.history['val_accuracy']
         loss = historia.history['loss']
         val_loss = historia.history['val_loss']
         epochs = range(len(accuracy))
-        plt.plot(epochs, accuracy, 'bo', label='Training accuracy')
-        plt.plot(epochs, val_accuracy, 'b', label='Validation accuracy')
+        plt.plot(epochs, accuracy, label='Training accuracy')
+        plt.plot(epochs, val_accuracy, label='Validation accuracy')
         plt.title('Training and validation accuracy')
         plt.legend()
         plt.figure()
-        plt.plot(epochs, loss, 'bo', label='Training loss')
-        plt.plot(epochs, val_loss, 'b', label='Validation loss')
+        plt.plot(epochs, loss, label='Training loss')
+        plt.plot(epochs, val_loss, label='Validation loss')
         plt.title('Training and validation loss')
         plt.legend()
-        plt.savefig(TRAINED_LEARNING_CURVE_PLOT)
-
-    #def __convert_image(self, str_image):
-    #    image = cv2.imread(str_image,0)
-    #    image = cv2.resize(image, (48, 48))
-    #    return image
+        plt.savefig(archivo)
 
     #'../datos/datasets/faces-googleset/happy/google_016.jpg'
     def cargar_imagen(self,ruta):
