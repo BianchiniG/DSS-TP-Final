@@ -11,7 +11,7 @@ from keras.losses import categorical_crossentropy
 from keras.optimizers import SGD
 from sklearn.metrics import confusion_matrix
 from keras.utils import np_utils
-from .utiles import EMOCIONES, CNN_TRAINED_MODEL_FILE, TRAINED_CONFUSION_MATRIX_PLOT, TRAINED_LEARNING_CURVE_PLOT
+from .utiles import EMOCIONES, CNN_TRAINED_MODEL_FILE_SAVE, CNN_TRAINED_MODEL_FILE_LOAD, TRAINED_CONFUSION_MATRIX_PLOT, TRAINED_LEARNING_CURVE_PLOT
 from .Model import Model
 import random
 from time import time
@@ -28,7 +28,7 @@ class CNN(Model):
         
         model, test_data, test_label, historia = self.__train_model(test_data, test_label, train_data, train_label)
         
-        model.save(CNN_TRAINED_MODEL_FILE)
+        model.save(CNN_TRAINED_MODEL_FILE_SAVE, CNN_TRAINED_MODEL_FILE_LOAD)
         
         print('Prediciendo CNN utilizando el set de prueba')
         confusion_matrix = self.__test_model(model, test_data, test_label)
@@ -58,8 +58,9 @@ class CNN(Model):
         return image_labels
 
     def predict(self, image):
-        model = load_model(CNN_TRAINED_MODEL_FILE)
-        prediction = model.predict(image)
+        model = load_model(CNN_TRAINED_MODEL_FILE_LOAD)
+        nueva = self.cargar_imagen(image)
+        prediction = model.predict(nueva)
         return EMOCIONES[np.argmax(prediction[0])]
 
 
@@ -173,8 +174,8 @@ class CNN(Model):
 
     #'../datos/datasets/faces-googleset/happy/google_016.jpg'
     def cargar_imagen(self,ruta):
-        imagen = cv2.imread(ruta,0)
-        imagen = cv2.resize(imagen, (48, 48))
+        #imagen = cv2.imread(ruta,0)
+        imagen = cv2.resize(ruta, (48, 48))
         images=[]
         images.append(imagen)
         X_images = np.array(images, dtype=np.uint8)

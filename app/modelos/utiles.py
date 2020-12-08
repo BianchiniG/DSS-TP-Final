@@ -27,11 +27,13 @@ FER_ORIGINAL_FILE = DB_BASEPATH+'datasets/fer2013.csv'
 LANDMARKS_SHAPE_PREDICTOR_FILE = '/app/datos/shape_predictor_68_face_landmarks.dat'
 
 RF_TRAINED_MODEL_FILE = '/app/datos/trained/rf_trained_model.pkl'
-CNN_TRAINED_MODEL_FILE = '/app/datos/trained/cnn_trained_model.h5'
+CNN_TRAINED_MODEL_FILE_SAVE = '/app/datos/trained/CNN-TPU-1.h5'
 SVM_TRAINED_MODEL_FILE = '/app/datos/trained/svm_trained_model.pkl'
 
+CNN_TRAINED_MODEL_FILE_LOAD = '/app/datos/trained/CNN-TPU-1.h5'
 TRAINED_CONFUSION_MATRIX_PLOT = '/app/static/img/CNN_fit_confusion_matrix9.png'
 TRAINED_LEARNING_CURVE_PLOT = '/app/static/img/CNN_fit_learning_curve9.png'
+
 
 EMOCIONES = {
     0: 'anger',

@@ -13,16 +13,18 @@ $(document).ready(function() {
     $("#procesar-imagen").on('click', function() {
         $('#procesar-imagen').attr('disabled', true);
         $('#procesar-imagen').html("Procesando...");
-        const input = $('#foto');
-        if (input.files && input.files[0]) {
-            $('#error-load').html("");
-            let reader = new FileReader();
 
-            reader.onload = function (e) {
-                const base64_image = e.target.result;
-                $.ajax({
+        var form_data = new FormData();
+        const input = $('#foto')[0].files;
+        
+        if (input.length>0) {
+            form_data.append('file',input[0])
+            $.ajax({
+                    type:'POST',
                     url: '/process_image',
-                    data: base64_image,
+                    data: form_data,
+                    contentType: false,
+                    processData: false,
                     success: function(respuesta) {
                         escribir_respuestas(respuesta);
                     },
@@ -34,9 +36,6 @@ $(document).ready(function() {
                         $('#procesar-imagen').attr('disabled', false);
                     }
                 });
-            };
-
-            reader.readAsDataURL(input.files[0]);
         } else {
             $('#error-load').html("Debe seleccionar una imágen!");
         }

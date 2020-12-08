@@ -1,6 +1,8 @@
+import numpy as np
 import cv2
-from flask import Flask, render_template, request, Response, jsonify
+from flask import Flask, render_template, request, Response, jsonify, redirect, url_for
 from Reconocimiento import Reconocimiento
+
 
 app = Flask(__name__)
 
@@ -39,9 +41,6 @@ def prueba():
     return render_template('prueba.html')
 
 
-@app.route('/not_found')
-def not_found():
-    return render_template('404.html')
 
 
 @app.route('/video_feed')
@@ -65,6 +64,21 @@ def view_result(model):
     else:
         return render_template('not_found.html')
 
+@app.route('/process_image', methods=['GET','POST'])
+def process_image():
+    image = request.files.get('file')
+
+    npimg = np.fromfile(image, np.uint8)
+    file = cv2.imdecode(npimg, cv2.COLOR_BGR2GRAY)
+
+    predicciones = reconocimiento.ejecutar(file)
+
+    return jsonify(predicciones)
+    
+
+@app.route('/not_found')
+def not_found():
+    return render_template('404.html')
 
 if __name__ == '__main__':
-    app.run(debug=False, host='0.0.0.0', threaded=True)
+    app.run(debug=True, host='0.0.0.0', threaded=True)
