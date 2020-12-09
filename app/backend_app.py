@@ -55,6 +55,7 @@ def process_image():
     image = request.files.get('file')
 
     npimg = np.fromfile(image, np.uint8)
+    
     file = cv2.imdecode(npimg, cv2.IMREAD_COLOR)
 
     predicciones = reconocimiento.ejecutar(file)

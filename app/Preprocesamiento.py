@@ -73,7 +73,7 @@ class Preprocesamiento:
             imagen = cv2.imread(imagen)
         grayed_img = cv2.cvtColor(imagen, cv2.COLOR_BGR2GRAY)
         face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
-        faces_detected = face_cascade.detectMultiScale(grayed_img, scaleFactor=1.5, minNeighbors=5)
+        faces_detected = face_cascade.detectMultiScale(grayed_img, scaleFactor=1.01, minNeighbors=6)
         if len(faces_detected):
             (x, y, w, h) = faces_detected[0]
             cv2.rectangle(grayed_img, (x, y), (x + w, y + h), (0, 255, 0), 1)

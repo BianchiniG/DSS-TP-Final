@@ -38,7 +38,7 @@ class SVM(Model):
         if self.modelo is None:
             return None
         prediction = self.modelo.predict(np.array(self.preprocesador.get_landmarks(image)).reshape(1, -1))
-        print("Emocion ", EMOCIONES[prediction[0]])
+        #print("Emocion ", EMOCIONES[prediction[0]])
         return EMOCIONES[prediction[0]]        
         
     def __train_model(self, train_data, train_label, test_data, test_label):
