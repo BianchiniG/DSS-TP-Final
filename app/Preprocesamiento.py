@@ -102,7 +102,15 @@ class Preprocesamiento:
             os.remove(database)
             df.to_csv(database)
 
-
+    def frame_detected_face(self, imagen):
+        face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+        faces_detected = face_cascade.detectMultiScale(imagen, scaleFactor=1.5, minNeighbors=5)
+        if len(faces_detected):
+            (x, y, w, h) = faces_detected[0]
+            cv2.rectangle(imagen, (x, y), (x + w, y + h), (0, 255, 0), 2)
+            img = cv2.normalize(imagen, None, 0, 255, cv2.NORM_MINMAX)
+            return img
+        return imagen
 
     def __create_dbs(self):
         dataframe = pd.DataFrame(data=[], columns=['index', 'imagen', 'clase'])

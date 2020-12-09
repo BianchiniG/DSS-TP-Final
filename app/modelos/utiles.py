@@ -1,3 +1,6 @@
+import os
+import shutil
+
 DB_BASEPATH = '/app/datos/'
 
 FACESDB_ROUTE = 'datasets/faces-db/'
@@ -34,6 +37,8 @@ CNN_TRAINED_MODEL_FILE_LOAD = '/app/datos/trained/CNN-TPU-1.h5'
 TRAINED_CONFUSION_MATRIX_PLOT = '/app/static/img/CNN_fit_confusion_matrix9.png'
 TRAINED_LEARNING_CURVE_PLOT = '/app/static/img/CNN_fit_learning_curve9.png'
 
+REALTIME_PREDICTION_OUT_PRIVATE_FOLDER = '/app/static/img/predicciones/'
+REALTIME_PREDICTION_OUT_PUBLIC_FOLDER = '/static/img/predicciones/'
 
 EMOCIONES = {
     0: 'anger',
@@ -63,3 +68,16 @@ def get_label_by_emotion(e):
         if emotion == e:
             return label
     return None
+
+
+def clean_predictions_folder():
+    folder = REALTIME_PREDICTION_OUT_PRIVATE_FOLDER
+    for filename in os.listdir(folder):
+        file_path = os.path.join(folder, filename)
+        try:
+            if os.path.isfile(file_path) or os.path.islink(file_path):
+                os.unlink(file_path)
+            elif os.path.isdir(file_path):
+                shutil.rmtree(file_path)
+        except Exception as e:
+            print('Failed to delete %s. Reason: %s' % (file_path, e))

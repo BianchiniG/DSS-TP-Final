@@ -1,5 +1,10 @@
 {% extends 'base.html' %}
 
+{% block styles %}
+  {{ super() }}
+  <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/index.css') }}">
+{% endblock %}
+
 {% block header %}
 <div class="row header">
   <div class="col-md-12">
@@ -10,37 +15,18 @@
 
 {% block content %}
 <div class="row content">
-  <div class="col-md-12">
+  <div class="col-md-6">
     <div class="card">
-      <div class="card-body">
+        <h2><i>Cámara</i></h2>
+        <div class="card-body">
         <img class="video" src="{{ url_for('video_feed') }}">
       </div>
     </div>
   </div>
-</div>
-
-<div class="content">
-  <div class="row">
-    <div class="col-md-12">
-      <div class="card">
-        <div class="card-body">
-          <h2>Resultados</h2>
-          <p class="error"></p>
-          <div class="row">
-            <div class="col-md-4">
-              <h4>Random Forest + BAGGing</h4>
-              <p class="rf"></p>
-            </div>
-            <div class="col-md-4">
-              <h4>SMV</h4>
-              <p class="svm"></p>
-            </div>
-            <div class="col-md-4">
-              <h4>Neural Network</h4>
-              <p class="cnn"></p>
-            </div>
-          </div>
-        </div>
+  <div class="col-md-6">
+    <div class="card">
+        <h2><i>Detecciones</i></h2>
+        <div class="card-body detecciones-realtime">
       </div>
     </div>
   </div>
