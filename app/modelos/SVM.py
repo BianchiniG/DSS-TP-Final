@@ -26,7 +26,7 @@ class SVM(Model):
         print('Extrayendo landmarks de las imagenes y dividiendo el dataset en entrenamiento/pruebas')
         train_data, train_label, test_data, test_label = self.__get_data_sets(image_labels)
         model, test_data, test_label = self.__train_model(train_data, train_label, test_data, test_label)
-        joblib.dump(model, 'SVM_TRAINED_MODEL_FILE, compress=9)
+        joblib.dump(model, SVM_TRAINED_MODEL_FILE, compress=9)
         print('Prediciendo SVM utilizando el set de prueba')
         confusion_matrix = self.__test_model(model, test_data, test_label)
         self.plot_confusion_matrix(cm=confusion_matrix, archivo=TRAINED_CONFUSION_MATRIX_PLOT)
