@@ -15,7 +15,7 @@
                     <li><b>Capa de convolución:</b> Se ocupan de aprender patrones locales en ventanas pequeñas de dos dimensiones, alto por ancho. Sirven para detectar características visuales en las imágenes como líneas, bordes y gotas de color. Permiten aprender una propiedad de la imagen en un punto específico y ser capaz de reconocerla en cualquier lugar de la propia imagen. Las capas convolucionales son capaces de aprender diferentes elementos más complejos en función de lo aprendido en la capa anterior. </li>
                     <li><b>Capa de agrupación:</b> Se realiza a continuación de las capas convolucionales. Agrupa las neuronas para obtener las propiedades más relevantes de los datos de entrada y obviar datos superfluos que pueden inducir a error.</li>
                 </ul>
-                <img src="{{ url_for('static', filename='img/random_forest_fit_learning_curve_old.png') }}" width="100%">
+                <img class="center" src="{{ url_for('static', filename='img/CNN_Arquitectura.png') }}" width="50%">
             </div>
         </div>
     </div>
@@ -36,14 +36,17 @@
     <div class="col-md-6">
         <div class="card">
             <div class="card-body">
-                <h4><i>Curva de Aprendizaje con el dataset de la cátedra</i></h4>
-                <img src="{{ url_for('static', filename='img/random_forest_fit_learning_curve_old.png') }}" width="100%">
-                <p>Durante la fase de entrenamiento (Training), logramos observar que el modelo tiene Underfitting.</p>
-                <p>Underfitting se refiere a un modelo que no puede aprender el conjunto de datos de entrenamiento.</p>
-                <p>Este desajuste se produce cuando el modelo no puede obtener un valor de error suficientemente bajo en el conjunto de entrenamiento.</p>
+                <h4><i>Curvas de Aprendizaje con el dataset de la cátedra + FER2013</i></h4>
+                <div class="row">
+                    <img class="center" src="{{ url_for('static', filename='img/CNN_fit_learning_curve_loss.jpeg') }}" width="30%">
+                    <img class="center" src="{{ url_for('static', filename='img/CNN_fit_learning_curve_acuraccy.jpeg') }}" width="30%">
+                </div>
+                <p>COMPLETAR.</p>
+                <p>COMPLETAR</p>
+                <p>COOMPLETARRR</p>
                 <hr>
                 <h4><i>Curva de Aprendizaje con el dataset aumentado</i></h4>
-                <img src="{{ url_for('static', filename='img/random_forest_fit_learning_curve.png') }}" width="100%">
+                <img src="{{ url_for('static', filename='') }}" width="100%">
                 <p>Texto</p>
             </div>
         </div>
@@ -51,8 +54,8 @@
     <div class="col-md-6">
         <div class="card">
             <div class="card-body">
-                <h4><i>Matriz de Confusion con el dataset de la cátedra</i></h4>
-                <img src="{{ url_for('static', filename='img/random_forest_fit_confusion_matrix_without_bootstrap_old.png') }}" width="100%">
+                <h4><i>Matriz de Confusion con el dataset de la cátedra + FER2013</i></h4>
+                <img src="{{ url_for('static', filename='img/CNN_fit_confusion_matrix-Final.jpeg') }}" width="100%">
                 <p>Luego del entrenamiento del modelo, para poder verificar su precisión (accuracy) y para mostrar de forma explícita cuando una clase es confundida con otra se realizaron matrices de confusión.</p>
                 <p>En este caso, podemos observar que el modelo “predice” en general las mismas emociones (clases). Este efecto es causado mayormente por el Underfitting del modelo, y por el bajo número de datos del dataset de entrada, como así también el gran desbalance del dataset. Se puede observar por la concentracion de color en las clases de la matriz.</p>
                 <img src="{{ url_for('static', filename='img/random_forest_fit_confusion_matrix_old.png') }}" width="100%">
