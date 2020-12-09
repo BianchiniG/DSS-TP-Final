@@ -7,3 +7,7 @@ matplotlib==3.3.3
 tensorflow==2.3.1
 Keras==2.4.3
 Pillow==8.0.1
+imbalanced-learn==0.4.3
+imblearn==0.0
+
+
