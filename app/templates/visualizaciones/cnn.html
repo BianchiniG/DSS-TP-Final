@@ -38,8 +38,13 @@
             <div class="card-body">
                 <h4><i>Curvas de Aprendizaje con el dataset de la cátedra + FER2013</i></h4>
                 <div class="row">
-                    <img class="center" src="{{ url_for('static', filename='img/CNN_fit_learning_curve_loss.jpeg') }}" width="30%">
-                    <img class="center" src="{{ url_for('static', filename='img/CNN_fit_learning_curve_acuraccy.jpeg') }}" width="30%">
+                    <img class="center" src="{{ url_for('static', filename='img/CNN_fit_learning_curve_loss.png') }}" width="30%">
+                    <img class="center" src="{{ url_for('static', filename='img/CNN_fit_learning_curve_acuraccy.png') }}" width="30%">
+                </div>
+                <h4><i>Curvas de Aprendizaje con el dataset de la cátedra + FER2013 - Balanceado</i></h4>
+                <div class="row">
+                    <img class="center" src="{{ url_for('static', filename='img/CNN_fit_learning_curve_loss-balanceado.png') }}" width="30%">
+                    <img class="center" src="{{ url_for('static', filename='img/CNN_fit_learning_curve_acuraccy-balanceado.png') }}" width="30%">
                 </div>
                 <p>COMPLETAR.</p>
                 <p>COMPLETAR</p>
@@ -55,16 +60,15 @@
         <div class="card">
             <div class="card-body">
                 <h4><i>Matriz de Confusion con el dataset de la cátedra + FER2013</i></h4>
-                <img src="{{ url_for('static', filename='img/CNN_fit_confusion_matrix-Final.jpeg') }}" width="100%">
+                <img src="{{ url_for('static', filename='img/CNN_fit_confusion_matrix-Final.jpeg') }}" width="50%">
                 <p>Luego del entrenamiento del modelo, para poder verificar su precisión (accuracy) y para mostrar de forma explícita cuando una clase es confundida con otra se realizaron matrices de confusión.</p>
                 <p>En este caso, podemos observar que el modelo “predice” en general las mismas emociones (clases). Este efecto es causado mayormente por el Underfitting del modelo, y por el bajo número de datos del dataset de entrada, como así también el gran desbalance del dataset. Se puede observar por la concentracion de color en las clases de la matriz.</p>
-                <img src="{{ url_for('static', filename='img/random_forest_fit_confusion_matrix_old.png') }}" width="100%">
+                <h4><i>Matriz de Confusion con el dataset de la cátedra + FER2013 - Balanceado</i></h4>
+                <img src="{{ url_for('static', filename='img/CNN_fit_confusion_matrix-Final-Balanceado.png') }}" width="50%">
+
                 <p>En el siguiente experimento, se entrenó el modelo utilizando Bootstrap (con el mismo dataset de entrada). En este caso se observa una performance mucho más regular del modelo logrando “predecir” de una manera más correcta y variada entre las emociones o clases.</p>
                 <p>Igualmente, el modelo tiende a confundir en un alto grado las clases o emociones del modelo.</p>
                 <hr>
-                <h4><i>Matriz de confusión con el dataset aumentado</i></h4>
-                <img src="{{ url_for('static', filename='img/random_forest_fit_confusion_matrix.png') }}" width="100%">
-                <p><i>NOTA: Se sacó el paso de bagging y se configuró al clasificador de Random Forest por temas de rendimiento</i></p>
             </div>
         </div>
     </div>
