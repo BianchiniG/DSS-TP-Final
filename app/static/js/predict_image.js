@@ -22,7 +22,7 @@ $(document).ready(function() {
             form_data.append('file',input[0])
             $.ajax({
                     type:'POST',
-                    url: '/process_image',
+                    url: 'http://localhost:5001/process_image',
                     data: form_data,
                     contentType: false,
                     processData: false,

@@ -6,7 +6,7 @@ $(document).ready(function() {
 
 function obtener_resultados() {
     $.ajax({
-        url: '/recon_results',
+        url: 'http://localhost:5001/recon_results',
         success: function(respuesta) {
             escribir_respuestas(respuesta);
         },

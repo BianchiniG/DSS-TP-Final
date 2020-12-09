@@ -1,9 +1,9 @@
 version: '3'
 
 services:
-  dss_tp_final:
-    build: ./build
-    container_name: dss_tp_final
+  dss_tp_final_frontend:
+    build: ./build/frontend
+    container_name: dss_tp_final_frontend
     environment:
       - DISPLAY:unix$DISPLAY
     ports:
@@ -13,3 +13,23 @@ services:
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
     devices:
       - /dev/video0:/dev/video0
+    networks:
+      vpc:
+        ipv4_address: 172.30.0.2
+
+  dss_tp_final_backend:
+    build: ./build/backend
+    container_name: dss_tp_final_backend
+    ports:
+      - "5001:5001"
+    volumes:
+      - ./app:/app
+    networks:
+      vpc:
+        ipv4_address: 172.30.0.3
+
+networks:
+  vpc:
+    ipam:
+      config:
+        - subnet: 172.30.0.0/24
