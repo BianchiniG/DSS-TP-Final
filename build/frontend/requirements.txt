@@ -1,3 +1,5 @@
 scikit-learn==0.23.2
 imageio==2.9.0
 joblib==0.17.0
+imbalanced-learn==0.4.3
+imblearn==0.0

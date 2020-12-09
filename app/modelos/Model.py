@@ -1,6 +1,7 @@
 import os
 import abc
 import ast
+import itertools
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -16,7 +17,7 @@ from .utiles import get_label_by_emotion, \
     FACESGOOGLESETDB_LANDMARKS_FULL_PATH, \
     FERDB_LANDMARKS_FULL_PATH, \
     EMOCIONES
-import itertools
+
 
 class Model(abc.ABC):
     @abc.abstractmethod

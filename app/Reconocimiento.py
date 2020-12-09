@@ -1,5 +1,5 @@
 from modelos.RandomForest import RandomForest
-from modelos.SVM import SVM
+# from modelos.SVM import SVM
 from modelos.CNN import CNN
 from Preprocesamiento import Preprocesamiento
 

@@ -9,4 +9,4 @@ RUN pip install -r requirements.txt
 
 RUN usermod -aG video root
 
-CMD python app.py
+CMD python frontend_app.py
