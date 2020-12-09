@@ -36,40 +36,62 @@
     <div class="col-md-6">
         <div class="card">
             <div class="card-body">
+                <h4><i>Curva de Aprendizaje con el dataset de la cátedra</i></h4>
+                <img class="left" src="{{ url_for('static', filename='img/CNN_fit_learning_curve_loss_DSCatedra.png') }}" width="30%">
+                
+                <h4><i>Curva de Aprendizaje con el dataset de la cátedra + Data Augmentation</i></h4>
+                <img class="left" src="{{ url_for('static', filename='img/CNN_fit_learning_curve_loss_DSCatedra_DA.png') }}" width="30%">
+
                 <h4><i>Curvas de Aprendizaje con el dataset de la cátedra + FER2013</i></h4>
                 <div class="row">
                     <img class="center" src="{{ url_for('static', filename='img/CNN_fit_learning_curve_loss.png') }}" width="30%">
                     <img class="center" src="{{ url_for('static', filename='img/CNN_fit_learning_curve_acuraccy.png') }}" width="30%">
                 </div>
+                <h4><i>Curvas de Aprendizaje con el dataset de la cátedra + FER2013 + Data Augmentation</i></h4>
+                <img class="left" src="{{ url_for('static', filename='img/CNN_fit_learning_curve_DA.png') }}" width="30%">
                 <h4><i>Curvas de Aprendizaje con el dataset de la cátedra + FER2013 - Balanceado</i></h4>
                 <div class="row">
                     <img class="center" src="{{ url_for('static', filename='img/CNN_fit_learning_curve_loss-balanceado.png') }}" width="30%">
                     <img class="center" src="{{ url_for('static', filename='img/CNN_fit_learning_curve_acuraccy-balanceado.png') }}" width="30%">
                 </div>
-                <p>COMPLETAR.</p>
-                <p>COMPLETAR</p>
-                <p>COOMPLETARRR</p>
                 <hr>
-                <h4><i>Curva de Aprendizaje con el dataset aumentado</i></h4>
-                <img src="{{ url_for('static', filename='') }}" width="100%">
-                <p>Texto</p>
             </div>
         </div>
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <h4><i>Scores dataset de la cátedra + FER2013</i></h4>
+                    <img class="left" src="{{ url_for('static', filename='img/CNN_fit_learning_Scores_DSFER.jpeg') }}" width="10%">
+                
+                    <h4><i>Scores dataset de la cátedra + FER2013 + Balanceado</i></h4>
+                    <img class="left" src="{{ url_for('static', filename='img/CNN_fit_learning_Scores_DSFER_Balanceado.png') }}" width="10%">
+                </div>
+            </div>
+        /</div>
     </div>
     <div class="col-md-6">
         <div class="card">
             <div class="card-body">
+                <h4><i>Matriz de Confusion con el dataset de la cátedra</i></h4>
+                <img class="center" src="{{ url_for('static', filename='img/CNN_fit_confusion_matrix_DSCatedra.png') }}" width="50%">
+                
+                <h4><i>Matriz de Confusion con el dataset de la cátedra + Data Augmentation</i></h4>
+                <img class="center" src="{{ url_for('static', filename='img/CNN_fit_confusion_matrix_DSCatedra_DA.png') }}" width="50%">
+                
                 <h4><i>Matriz de Confusion con el dataset de la cátedra + FER2013</i></h4>
-                <img src="{{ url_for('static', filename='img/CNN_fit_confusion_matrix-Final.jpeg') }}" width="50%">
-                <p>Luego del entrenamiento del modelo, para poder verificar su precisión (accuracy) y para mostrar de forma explícita cuando una clase es confundida con otra se realizaron matrices de confusión.</p>
-                <p>En este caso, podemos observar que el modelo “predice” en general las mismas emociones (clases). Este efecto es causado mayormente por el Underfitting del modelo, y por el bajo número de datos del dataset de entrada, como así también el gran desbalance del dataset. Se puede observar por la concentracion de color en las clases de la matriz.</p>
-                <h4><i>Matriz de Confusion con el dataset de la cátedra + FER2013 - Balanceado</i></h4>
-                <img src="{{ url_for('static', filename='img/CNN_fit_confusion_matrix-Final-Balanceado.png') }}" width="50%">
+                <img class="center" src="{{ url_for('static', filename='img/CNN_fit_confusion_matrix-Final.jpeg') }}" width="50%">
+                
+                <h4><i>Matriz de Confusion con el dataset de la cátedra + FER2013 + DATA Augmentation</i></h4>
+                <img class="center" src="{{ url_for('static', filename='img/CNN_fit_confusion_matrix_DA.png') }}" width="50%">
 
-                <p>En el siguiente experimento, se entrenó el modelo utilizando Bootstrap (con el mismo dataset de entrada). En este caso se observa una performance mucho más regular del modelo logrando “predecir” de una manera más correcta y variada entre las emociones o clases.</p>
-                <p>Igualmente, el modelo tiende a confundir en un alto grado las clases o emociones del modelo.</p>
-                <hr>
+                <h4><i>Matriz de Confusion con el dataset de la cátedra + FER2013 - Balanceado</i></h4>
+                <img class="center" src="{{ url_for('static', filename='img/CNN_fit_confusion_matrix-Final-Balanceado.png') }}" width="50%">
             </div>
+            <div class="card-body">
+                <h4><i>Datasets de Catedra + FER2013 vs Balanceado</i></h4>
+                <img src="{{ url_for('static', filename='img/dataset_original.png') }}" width="100%">
+                <img src="{{ url_for('static', filename='img/dataset_balanceado.png') }}" width="100%">
+            <div>
         </div>
     </div>
 </div>
