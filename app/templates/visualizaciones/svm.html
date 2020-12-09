@@ -1,1 +1,55 @@
-<p>Datos de SVM</p>
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-12">
+                <h3><b>SVM</b></h3>
+                <p>Las máquinas de vectores de soporte (SVM) permiten encontrar la forma óptima de clasificar entre varias clases. La clasificación óptima se realiza maximizando el margen de separación entre las clases. Los vectores que definen el borde de esta separación son los vectores de soporte.</p>
+                <p>Funcionamiento:</p>
+                <ul>
+                    <li>El entrenamiento de una máquina de vectores de soporte consta de dos fases:</li>
+                    <li>1. Transformar los predictores (datos de entrada) en un espacio de características altamente dimensional. En esta fase es suficiente con especificar el kernel; los datos nunca se transforman explícitamente al espacio de características. Este proceso se conoce comúnmente como el truco kernel, en primera instancia se uso un kernel linear, luego con el aumento del dataset se utilizo un kernel rbf.</li>
+                    <li>2. Resolver un problema de optimización cuadrática que se ajuste a un hiperplano óptimo para clasificar las características transformadas en dos clases. El número de características transformadas está determinado por el número de vectores de soporte.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h3><b>Resultados del trabajo</b></h3>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h4><i>Curva de Aprendizaje con el dataset de la cátedra</i></h4>
+                <img src="{{ url_for('static', filename='img/svm_fit_learning_curve_old.png') }}" width="100%">
+                <p>Durante la fase de entrenamiento (Training), logramos observar que el modelo tiene Underfitting.</p>
+                <p>Underfitting se refiere a un modelo que no puede aprender el conjunto de datos de entrenamiento.</p>
+                <p>Este desajuste se produce cuando el modelo no puede obtener un valor de error suficientemente bajo en el conjunto de entrenamiento.</p>
+                <hr>
+                <h4><i>Curva de Aprendizaje con el dataset aumentado</i></h4>
+                <img src="{{ url_for('static', filename='img/svm_fit_learning_curve.png') }}" width="100%">
+                <p>Texto</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h4><i>Matriz de Confusion con el dataset de la cátedra</i></h4>
+                <img src="{{ url_for('static', filename='img/svm_fit_confusion_matrix_old.png') }}" width="100%">
+                <h4><i>Matriz de confusión con el dataset aumentado</i></h4>
+                <img src="{{ url_for('static', filename='img/svm_fit_confusion_matrix.png') }}" width="100%">
+            </div>
+        </div>
+    </div>
+</div>
