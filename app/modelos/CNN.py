@@ -22,7 +22,7 @@ from keras.preprocessing.image import ImageDataGenerator
 class CNN(Model):
     def fit(self):
         images, labels = self.get_images_and_labels_for_training()
-        image_labels = self.__get_labeled_images(images[0:8000], labels[0:8000])
+        image_labels = self.__get_labeled_images(images, labels)
         
         train_data, test_data, train_label, test_label = self.__get_data_sets(image_labels)
         

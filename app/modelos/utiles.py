@@ -33,7 +33,7 @@ RF_TRAINED_MODEL_FILE = '/app/datos/trained/rf_trained_model.pkl'
 CNN_TRAINED_MODEL_FILE_SAVE = '/app/datos/trained/CNN-TPU-1.h5'
 SVM_TRAINED_MODEL_FILE = '/app/datos/trained/svm_trained_model.pkl'
 
-CNN_TRAINED_MODEL_FILE_LOAD = '/app/datos/trained/CNN-TPU-1.h5'
+CNN_TRAINED_MODEL_FILE_LOAD = '/app/datos/trained/CNN-TPU-Balanceado.h5'
 TRAINED_CONFUSION_MATRIX_PLOT = '/app/static/img/CNN_fit_confusion_matrix9.png'
 TRAINED_LEARNING_CURVE_PLOT = '/app/static/img/CNN_fit_learning_curve9.png'
 

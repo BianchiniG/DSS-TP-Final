@@ -1,1 +1,75 @@
-<p>Datos de Red Neuronal</p>
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-12">
+                <h3><b>Acerca de Redes Neuronales Convolucionales</b></h3>
+                <p>Las redes neuronales son sistemas que enlazan las neuronas para que puedan trabajar entre ellas y así producir un estímulo de salida. Así son capaces de aprender y pueden adaptarse a las diferentes entradas que les pueden llegar. Las redes neuronales constan de capas de entrada, capas ocultas y capas de salida.</p>
+                <p>La CNN es un tipo de Red Neuronal Artificial utilizadas en aprendizaje profundo, procesa sus capas imitando al córtex visual del ojo humano para identificar distintas características en las entradas que hacen que pueda identificar objetos y “ver”. Donde las neuronas tienen forma de pesos y sesgos que se pueden aprender. Las CNN están compuestas por tres capas básicas:</p>
+                <ul>
+                    <li><b>Capa de entrada:</b> Recibe los datos de entrada y los pasa a la primera capa oculta. Esta capa tendrá tantas neuronas como entradas tenga la red. </li>
+                    <li><b>Capa oculta:</b> Realizarán los cálculos matemáticos con nuestras entradas. Las redes neuronales pueden estar compuestas por varias de estas capas. </li>
+                    <li><b>Capa de salida:</b> Una vez que la red realiza las operaciones matemáticas, contiene el resultado. Habrá tantas neuronas como clasificaciones haya.</li>
+                </ul>
+                <p>Existen unas capas ocultas que están especializadas en dos operaciones: convolución y agrupación. </p>
+                <ul>
+                    <li><b>Capa de convolución:</b> Se ocupan de aprender patrones locales en ventanas pequeñas de dos dimensiones, alto por ancho. Sirven para detectar características visuales en las imágenes como líneas, bordes y gotas de color. Permiten aprender una propiedad de la imagen en un punto específico y ser capaz de reconocerla en cualquier lugar de la propia imagen. Las capas convolucionales son capaces de aprender diferentes elementos más complejos en función de lo aprendido en la capa anterior. </li>
+                    <li><b>Capa de agrupación:</b> Se realiza a continuación de las capas convolucionales. Agrupa las neuronas para obtener las propiedades más relevantes de los datos de entrada y obviar datos superfluos que pueden inducir a error.</li>
+                </ul>
+                <img class="center" src="{{ url_for('static', filename='img/CNN_Arquitectura.png') }}" width="50%">
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h3><b>Resultados del trabajo</b></h3>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h4><i>Curvas de Aprendizaje con el dataset de la cátedra + FER2013</i></h4>
+                <div class="row">
+                    <img class="center" src="{{ url_for('static', filename='img/CNN_fit_learning_curve_loss.png') }}" width="30%">
+                    <img class="center" src="{{ url_for('static', filename='img/CNN_fit_learning_curve_acuraccy.png') }}" width="30%">
+                </div>
+                <h4><i>Curvas de Aprendizaje con el dataset de la cátedra + FER2013 - Balanceado</i></h4>
+                <div class="row">
+                    <img class="center" src="{{ url_for('static', filename='img/CNN_fit_learning_curve_loss-balanceado.png') }}" width="30%">
+                    <img class="center" src="{{ url_for('static', filename='img/CNN_fit_learning_curve_acuraccy-balanceado.png') }}" width="30%">
+                </div>
+                <p>COMPLETAR.</p>
+                <p>COMPLETAR</p>
+                <p>COOMPLETARRR</p>
+                <hr>
+                <h4><i>Curva de Aprendizaje con el dataset aumentado</i></h4>
+                <img src="{{ url_for('static', filename='') }}" width="100%">
+                <p>Texto</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h4><i>Matriz de Confusion con el dataset de la cátedra + FER2013</i></h4>
+                <img src="{{ url_for('static', filename='img/CNN_fit_confusion_matrix-Final.jpeg') }}" width="50%">
+                <p>Luego del entrenamiento del modelo, para poder verificar su precisión (accuracy) y para mostrar de forma explícita cuando una clase es confundida con otra se realizaron matrices de confusión.</p>
+                <p>En este caso, podemos observar que el modelo “predice” en general las mismas emociones (clases). Este efecto es causado mayormente por el Underfitting del modelo, y por el bajo número de datos del dataset de entrada, como así también el gran desbalance del dataset. Se puede observar por la concentracion de color en las clases de la matriz.</p>
+                <h4><i>Matriz de Confusion con el dataset de la cátedra + FER2013 - Balanceado</i></h4>
+                <img src="{{ url_for('static', filename='img/CNN_fit_confusion_matrix-Final-Balanceado.png') }}" width="50%">
+
+                <p>En el siguiente experimento, se entrenó el modelo utilizando Bootstrap (con el mismo dataset de entrada). En este caso se observa una performance mucho más regular del modelo logrando “predecir” de una manera más correcta y variada entre las emociones o clases.</p>
+                <p>Igualmente, el modelo tiende a confundir en un alto grado las clases o emociones del modelo.</p>
+                <hr>
+            </div>
+        </div>
+    </div>
+</div>
