@@ -40,8 +40,7 @@ def get_recon_results():
             imagen = REALTIME_PREDICTION_OUT_PUBLIC_FOLDER+filename
             cv2.imwrite(imagen_save_dir, frame)
     except Exception as e:
-        backend_app.logger.error(e)
-        backend_app.logger.error("Error reconociendo la foto")
+        backend_app.logger.error("No se reconoció una cara en la imagen o no se recibió una imagen")
 
     return jsonify({
         'imagen': imagen,
@@ -63,4 +62,4 @@ def process_image():
 
 
 if __name__ == '__main__':
-    backend_app.run(debug=True, host='0.0.0.0', port=5001, threaded=True)
+    backend_app.run(debug=False, host='0.0.0.0', port=5001, threaded=True)
