@@ -1,4 +1,4 @@
-
+import os
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
@@ -18,8 +18,12 @@ from time import time
 from keras.preprocessing.image import ImageDataGenerator
 
 
-
 class CNN(Model):
+    def __init__(self):
+        self.model = None
+        if os.path.exists(CNN_TRAINED_MODEL_FILE_LOAD):
+            self.model = load_model(CNN_TRAINED_MODEL_FILE_LOAD)
+
     def fit(self):
         images, labels = self.get_images_and_labels_for_training()
         image_labels = self.__get_labeled_images(images, labels)
@@ -35,7 +39,6 @@ class CNN(Model):
         self.plot_confusion_matrix(cm=confusion_matrix, normalize=False, archivo=TRAINED_CONFUSION_MATRIX_PLOT)
         self.__plot_learning_curve(historia,TRAINED_LEARNING_CURVE_PLOT)
         scores = model.evaluate(test_data, test_label, verbose=0)
-        
 
     def __test_model(self, cnn_clf, test_data, test_label):
         start_time = time()
@@ -58,11 +61,11 @@ class CNN(Model):
         return image_labels
 
     def predict(self, image):
-        model = load_model(CNN_TRAINED_MODEL_FILE_LOAD)
+        if self.model is None:
+            return None
         nueva = self.cargar_imagen(image)
-        prediction = model.predict(nueva)
+        prediction = self.model.predict(nueva)
         return EMOCIONES[np.argmax(prediction[0])]
-
 
     def __get_data_sets(self, image_labels):
         train_data = []
@@ -104,8 +107,6 @@ class CNN(Model):
 
         return train_data, test_data, train_label, test_label
 
-
-    
     def __train_model(self, test_data, test_label, train_data, train_label):
         batch_size = 64
         epochs = 40

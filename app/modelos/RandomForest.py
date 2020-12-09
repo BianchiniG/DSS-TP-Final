@@ -1,3 +1,4 @@
+import os
 import sys
 sys.path.append("..")
 import joblib
@@ -18,6 +19,13 @@ TRAINED_LEARNING_CURVE_PLOT = '/app/static/img/random_forest_fit_learning_curve.
 
 
 class RandomForest(Model):
+    def __init__(self):
+        self.preprocesador = Preprocesamiento()
+        if os.path.exists(RF_TRAINED_MODEL_FILE):
+            self.model = joblib.load(RF_TRAINED_MODEL_FILE)
+        else:
+            self.model = None
+
     def fit(self):
         images, labels = self.get_image_landmarks_and_labels_for_training()
         image_labels = self.__get_labeled_images(images, labels)
@@ -31,9 +39,9 @@ class RandomForest(Model):
         self.plot_confusion_matrix(cm=confusion_matrix, archivo=TRAINED_CONFUSION_MATRIX_PLOT)
 
     def predict(self, image):
-        preprocesador = Preprocesamiento()
-        model = joblib.load(RF_TRAINED_MODEL_FILE)
-        prediction = model.predict(np.array(preprocesador.get_landmarks(image)).reshape(1, -1))
+        if self.model is None:
+            return None
+        prediction = self.model.predict(np.array(self.preprocesador.get_landmarks(image)).reshape(1, -1))
         return EMOCIONES[prediction[0]]
 
     def __train_model(self, test_data, test_label, train_data, train_label):

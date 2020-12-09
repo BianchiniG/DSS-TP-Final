@@ -12,8 +12,14 @@ from Preprocesamiento import Preprocesamiento
 TRAINED_CONFUSION_MATRIX_PLOT = '/app/static/img/svm_fit_confusion_matrix.png'
 TRAINED_LEARNING_CURVE_PLOT = '/app/static/img/svm_fit_learning_curve.png'
 
+
 class SVM(Model):
-        
+    def __init__(self):
+        self.modelo = None
+        self.preprocesador = Preprocesamiento()
+        if os.path.exists(SVM_TRAINED_MODEL_FILE):
+            self.modelo = joblib.load(SVM_TRAINED_MODEL_FILE)
+
     def fit(self):
         accur_lin = []
         images, labels = self.get_image_landmarks_and_labels_for_training()
@@ -29,9 +35,9 @@ class SVM(Model):
         self.plot_confusion_matrix(cm=confusion_matrix, archivo=TRAINED_CONFUSION_MATRIX_PLOT)
 
     def predict(self, image):
-        preprocesador = Preprocesamiento()
-        model = joblib.load(SVM_TRAINED_MODEL_FILE)
-        prediction = model.predict(np.array(preprocesador.get_landmarks(preprocesador.preprocess_image(image))).reshape(1, -1))
+        if self.modelo is None:
+            return None
+        prediction = self.modelo.predict(np.array(self.preprocesador.get_landmarks(image)).reshape(1, -1))
         print("Emocion ", EMOCIONES[prediction[0]])
         return EMOCIONES[prediction[0]]        
         
