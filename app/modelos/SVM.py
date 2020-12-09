@@ -7,10 +7,7 @@ from modelos.utiles import EMOCIONES, SVM_TRAINED_MODEL_FILE, LANDMARKS_SHAPE_PR
 from time import time
 from sklearn.metrics import confusion_matrix
 import joblib
-from sklearn.model_selection import GridSearchCV
-from imblearn.under_sampling import NearMiss
-from imblearn.over_sampling import RandomOverSampler
-from imblearn.combine import SMOTETomek 
+from Preprocesamiento import Preprocesamiento
 
 TRAINED_CONFUSION_MATRIX_PLOT = '/app/static/img/svm_fit_confusion_matrix.png'
 TRAINED_LEARNING_CURVE_PLOT = '/app/static/img/svm_fit_learning_curve.png'
@@ -68,7 +65,6 @@ class SVM(Model):
         return confusion_matrix(test_label, svm_predict_labels)
     
     def __get_labeled_images(self, images, labels):
-        us = SMOTETomek()  
         image_labels = list(zip(images, labels))
         random.seed(time())
         random.shuffle(image_labels)
